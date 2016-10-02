@@ -8,6 +8,7 @@ If not, to view a copy of the license, visit https://creativecommons.org/license
 -->
 
 <?php
+include('php/ga.php');
 include('php/session.php');
 
 if(!isset($_SESSION["logintries"])){
@@ -17,7 +18,6 @@ if(!isset($_SESSION["logintries"])){
 $return = "admin.php";
 if(!empty($_SESSION["return"])){
 	$return = $_SESSION["return"];
-	//unset($_SESSION["return"]);
 }
 
 if(!empty($_SESSION["userid"])){
@@ -25,7 +25,7 @@ if(!empty($_SESSION["userid"])){
 }
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
-	if( !empty($_POST["username"]) && !empty($_POST["password"]) ){
+	if( !empty($_POST["username"]) && !empty($_POST["password"]) && !empty($_POST["otp"]) ){
 		if($_SESSION["logintries"]>=5){
 			if(!isset($_SESSION["loginretry"])){
 				$_SESSION["loginretry"]=time()+20;
@@ -47,12 +47,19 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 			if ($result->num_rows == 1) {
 				$row=$result->fetch_assoc();
 				if(password_verify($_POST["password"],$row["password"])){
-					$_SESSION["userdata"]=$row;
-					$_SESSION["userid"]=$row["userid"];
-					if(!empty($_POST["rememberme"])){
-						generate_ptoken();
+					error_log("OTP Secret: ".$row["otpsecret"].", OTP: ".$_POST["otp"]);
+					if(Google2FA::verify_key($row["otpsecret"],$_POST["otp"])){
+						$_SESSION["userdata"]=$row;
+						$_SESSION["userid"]=$row["userid"];
+						if(!empty($_POST["rememberme"])){
+							generate_ptoken();
+						}
+						header('Location: '.$return);
+					}else{
+						$loginerror="Invalid one-time password.";
+						$_SESSION["logintries"]+=1;
+						include('php/log.php');
 					}
-					header('Location: '.$return);
 				}else{
 					$loginerror="Invalid username or password.";
 					$_SESSION["logintries"]+=1;
