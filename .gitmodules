@@ -1,3 +1,6 @@
 [submodule "DonorTrack/cxa/php/qrgen"]
 	path = DonorTrack/cxa/php/qrgen
 	url = https://github.com/t0k4rt/phpqrcode.git
+[submodule "DonorTrack/cxa/php/otp"]
+	path = DonorTrack/cxa/php/otp
+	url = https://github.com/lelag/otphp.git
