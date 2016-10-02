@@ -1,16 +1,16 @@
 import requests
-import csv
 import time
+import json
+import csv
+import sys
 
 
 class FBM():
-	def __init__(self, url, token=None):
+	def __init__(self, url):
 		self.url = url
-		self.token = token
 		self.session = requests.Session()
 
 	def auth(self, user, password):
-		# headers = {'User-Agent': 'Mozilla/5.0'}
 		payload = {
 			'username': user,
 			'password': password,
@@ -120,3 +120,47 @@ class FBM():
 						'/create-new-donation/create/did:' + str(D_id) + '/',
 						data=payload)
 		return r.status_code
+
+	def AddDonor(self, donor_json):
+		params = json.loads(donor_json)
+		payload = {
+			'donors_1f13985a81': 'N/A',
+			'firstName': params['first'],
+			'lastName': params['last'],
+			'donors_e0feeaff84': params['email'],
+			'donors_730b308554': 'N/A',
+			'streetAddress': params['street'],
+			'city': params['town'],
+			'state': params['state'],
+			'zipCode': params['zip'],
+			'donorType_id': '1',
+			'action': 'Save'
+		}
+		r = self.session.post('https://' + self.url +
+						'/create-new-donation/donor/create/',
+						data=payload)
+		return r.status_code
+		
+
+if __name__ == '__main__':
+	if len(sys.argv) < 4:
+		print "Usage: 'task' 'user' 'pass' ect..."
+		exit(1)
+	q = FBM("mcfb.soxbox.co")
+	q.auth(sys.argv[2], sys.argv[3])
+	if sys.argv[1] == "donors":
+		donor_list = q.GetDonors()
+		headers = next(donor_list)
+		for row in donor_list:
+			print "{"
+			for a, b in zip(row, headers):
+				print "\"" + b + "\": \"" + a + "\","
+			print "},"
+	elif sys.argv[1] == "add_donor":
+		# json formatted input wih the following params
+		# first, last, email, street, tow, state, zip
+		q.AddDonor(sys.argv[4])
+	elif sys.argv[1] == "add_donation":
+		# type user pass doner_id pounds Donation_type
+		q.PostDonation(sys.argv[5], 0, sys.argv[6], sys.argv[7])
+	
