@@ -16,15 +16,18 @@ include('meta.php');
 	</head>
 	<body>
 		<form action="action_page.php" id="main" style="min-height: 400px;">
-			<div id="topbar" class="loginbar noselect"><?php cxa_header("Whatever") ?></div>
+			<div id="topbar" class="loginbar noselect"><?php cxa_header("Thank you") ?></div>
 			<div class="welcomebar">
-			Thank you email<br/>
+			
+			<h3>Email</h3>
 			</div>
-			<br/><br><br>
-			<textarea style="height:300px;width:270px;font-size:12pt;"></textarea>
-			<br><br>
+			<br/><br>
+			
+			<textarea name = "email" id="email" rows="15" style="margin: 0 auto;width: 280px;"></textarea><br /><br />
+			<input type="submit" value="  Send  "/><br><br>
 			<div id="bottombar" class="loginbar noselect" onclick="document.getElementById('main').submit(); return false;">Submit&nbsp;&nbsp;</div>
 			<div id="footer" class="loginbar"><?php cxa_footer() ?></div>
+			
 		</form>
 	</body>
 </html>
