@@ -21,6 +21,6 @@ function cxa_minheader($type=false,$url="landing.php"){
 	}
 }
 function cxa_footer(){
-	echo "&nbsp;CXA Auth LW and Live Demo &copy;2016 James Rowley - <a href=\"mailto:james@jrowley.me\">contact</a>";
+	echo "&nbsp;MCDM DonorTrack &copy;2016 James Rowley - <a href=\"mailto:james@jrowley.me\">contact</a>";
 }
 ?>

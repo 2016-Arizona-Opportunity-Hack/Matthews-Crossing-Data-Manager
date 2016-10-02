@@ -9,6 +9,15 @@ If not, to view a copy of the license, visit https://creativecommons.org/license
 
 <?php
 include('php/guestsession.php');
+include('php/otphp/src/ParameterTrait.php');
+include('php/otphp/src/OTPInterface.php');
+include('php/otphp/src/OTP.php');
+include('php/otphp/src/HOTPInterface.php');
+include('php/otphp/src/HOTP.php');
+include('php/otphp/src/TOTPInterface.php');
+include('php/otphp/src/TOTP.php');
+include('php/otphp/src/Factory.php');
+use OTPHP\TOTP;
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 	if( !empty($_POST["username"]) && !empty($_POST["password"]) && !empty($_POST["password_conf"]) && !empty($_POST["name"]) ){
@@ -18,13 +27,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 				$passwd=password_hash($conn->escape_string($_POST['password']),PASSWORD_BCRYPT);
 				$name=$conn->escape_string($_POST['name']);
 				$email=$conn->escape_string($_POST['email']);
-				$sql = "INSERT INTO user_limbo (username, password, email, name) VALUES (\"$uname\", \"$passwd\", \"$email\", \"$name\")";
-				if($conn->query($sql)){
-					include('php/reg-ok.php');
-				}else{
-					$registererror="Database error!";
-					include('php/reg.php');
-				}
+				$otp = new TOTP($uname."@CXA");
+				$otpsecret = $otp->getSecret();
+				$sql = "INSERT INTO user_limbo (username, password, email, name, otpsecret) VALUES (\"$uname\", \"$passwd\", \"$email\", \"$name\", \"$otpsecret\")";
+				$_SESSION["otphp"]=$otp;
+				$_SESSION["regsql"]=$sql;
+				header('Location: /cxa/otpcode.php');
 			}else{
 				$registererror="Password must be 8 or more characters long.";
 				include('php/reg.php');
