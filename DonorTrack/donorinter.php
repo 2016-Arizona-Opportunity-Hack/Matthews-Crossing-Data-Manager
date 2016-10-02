@@ -20,8 +20,6 @@ function nextDonorID(){
 	return max(array_keys($_SESSION["donorlist"]))+1;
 }
 
-refreshDonorList();
-
 if(empty($_SESSION["donorlist"])){
 	refreshDonorList();
 }

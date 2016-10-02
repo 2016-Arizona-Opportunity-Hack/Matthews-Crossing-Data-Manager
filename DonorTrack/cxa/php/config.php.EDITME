@@ -13,7 +13,7 @@ $username = "username"; //SQL username
 $password = "password"; //SQL password
 $dbname = "database"; //SQL database for CXA
 $thedomain = "localhost"; //The domain this is running on (for cookies)
-$pypath = "/path/to/python" //The path to Python 2.7, or just "python" if applicable
+$pypath = "/path/to/python"; //The path to Python 2.7, or just "python" if applicable
 $fbm_user = "username"; //The username for Food Bank Manager
 $fbm_pass = "password"; //The password for Food Bank Manager
 ?>
