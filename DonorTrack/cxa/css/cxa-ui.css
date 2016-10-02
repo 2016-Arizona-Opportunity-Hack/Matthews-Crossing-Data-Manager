@@ -421,3 +421,7 @@ body {
 	border: none;
 	background: #FEFEFE;
 }
+.ilabel{
+	display: inline-block;
+	margin: 4px 0px 2px 0px;
+}
