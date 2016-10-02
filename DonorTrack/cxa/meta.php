@@ -9,7 +9,7 @@ If not, to view a copy of the license, visit https://creativecommons.org/license
 */
 
 function cxa_header($type=false,$url="/index.php"){
-	echo '<a id="toplogo" href="'.$url.'">MCM DonorTrack</a>';
+	echo '<a id="toplogo" href="'.$url.'">MCDM DonorTrack</a>';
 	if($type){
 		echo "&nbsp;&nbsp;".$type;
 	}
