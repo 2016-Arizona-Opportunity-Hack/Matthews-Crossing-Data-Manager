@@ -8,7 +8,7 @@ You should have received a copy of this license with CXA Auth LW.
 If not, to view a copy of the license, visit https://creativecommons.org/licenses/by-nc-sa/3.0/us/legalcode
 */
 
-function cxa_header($type=false,$url="admin.php"){
+function cxa_header($type=false,$url="/index.php"){
 	echo '<a id="toplogo" href="'.$url.'">MCM DonorTrack</a>';
 	if($type){
 		echo "&nbsp;&nbsp;".$type;
