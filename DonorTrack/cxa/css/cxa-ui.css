@@ -431,8 +431,11 @@ body {
 #results {
 	height: 200px;
 	overflow-y: scroll;
+	overflow-x: hidden;
 }
 .resitem {
+	display: block;
+	text-decoration: none;
 	color: black;
 	padding: 4px 10px;
 	background: #eee;
