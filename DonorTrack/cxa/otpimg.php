@@ -1,9 +1,8 @@
 <?php
-include('php/guestsession.php');
-use OTPHP\TOTP;
-include('php/qrgen/qrlib.php');
+require_once('php/qrgen/qrlib.php');
+require_once('php/guestsession.php');
 
-if(!empty($_SESSION["otphp"])){
-	QRcode::png($_SESSION["otphp"]->getProvisioningUri(););
+if(!empty($_SESSION["otpuri"])){
+	QRcode::png($_SESSION["otpuri"], false, 2, 4);
 }
 ?>

@@ -9,11 +9,11 @@ include('meta.php');
 		<meta name="viewport" content="width=device-width, initial-scale=1">
 	</head>
 	<body>
-		<form action="optcode.php" method="post" id="main">
+		<form action="otpcode.php" method="post" id="main">
 			<div id="topbar" class="loginbar noselect"><?php cxa_header() ?></div>
 			<div id="login">
-					<div id="loginerror" style="background: #2a2; color: #eee"><img src="/cxa/optimg.php" /></div>
-					&nbsp;Scan the code with your authenticator app, then enter your one-time code.<br/>
+					<div id="loginerror" style="background: #2a2; color: #eee; width: 180px; margin: 0 auto; padding: 4px;"><img src="/cxa/otpimg.php" /></div>
+					<p class="ilabel" style="margin-top: 12px;">&nbsp;Scan the code with the Google Authenticator app, then enter your one-time code below.</p>
 					<input type="number" name="otp" class="logintext"/><br/>
 					<input  type="submit" style="position: absolute; height: 0px; width: 0px; border: none; padding: 0px;" hidefocus="true" tabindex="-1"/>
 			</div>

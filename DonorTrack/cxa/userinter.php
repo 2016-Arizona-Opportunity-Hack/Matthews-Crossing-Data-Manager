@@ -20,7 +20,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 					$result=$conn->query($qry);
 					if($result && $result->num_rows==1){
 						$newuser=$result->fetch_assoc();
-						$qry='INSERT INTO users (username,password,name,email,authorization) VALUES ("'.$newuser["username"].'", "'.$newuser["password"].'", "'.$newuser["name"].'", "'.$newuser["email"].'", "'.$authlevel.'")';
+						$qry='INSERT INTO users (username,password,name,email,authorization,otpsecret) VALUES ("'.$newuser["username"].'", "'.$newuser["password"].'", "'.$newuser["name"].'", "'.$newuser["email"].'", "'.$authlevel.'", "'.$newuser["otpsecret"].'")';
 						if($conn->query($qry)){
 							$qry='DELETE FROM user_limbo WHERE userid="'.$newuser["userid"].'" LIMIT 1';
 							if($conn->query($qry)){

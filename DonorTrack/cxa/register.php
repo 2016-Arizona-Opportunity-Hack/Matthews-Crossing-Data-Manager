@@ -8,16 +8,8 @@ If not, to view a copy of the license, visit https://creativecommons.org/license
 -->
 
 <?php
+include('php/ga.php');
 include('php/guestsession.php');
-include('php/otphp/src/ParameterTrait.php');
-include('php/otphp/src/OTPInterface.php');
-include('php/otphp/src/OTP.php');
-include('php/otphp/src/HOTPInterface.php');
-include('php/otphp/src/HOTP.php');
-include('php/otphp/src/TOTPInterface.php');
-include('php/otphp/src/TOTP.php');
-include('php/otphp/src/Factory.php');
-use OTPHP\TOTP;
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 	if( !empty($_POST["username"]) && !empty($_POST["password"]) && !empty($_POST["password_conf"]) && !empty($_POST["name"]) ){
@@ -27,10 +19,10 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 				$passwd=password_hash($conn->escape_string($_POST['password']),PASSWORD_BCRYPT);
 				$name=$conn->escape_string($_POST['name']);
 				$email=$conn->escape_string($_POST['email']);
-				$otp = new TOTP($uname."@CXA");
-				$otpsecret = $otp->getSecret();
+				$otpsecret = Google2FA::generate_secret_key();
 				$sql = "INSERT INTO user_limbo (username, password, email, name, otpsecret) VALUES (\"$uname\", \"$passwd\", \"$email\", \"$name\", \"$otpsecret\")";
-				$_SESSION["otphp"]=$otp;
+				$_SESSION["otpsecret"]=$otpsecret;
+				$_SESSION["otpuri"]='otpauth://totp/MCDM:'.$uname.'@CXA?secret='.$otpsecret;
 				$_SESSION["regsql"]=$sql;
 				header('Location: /cxa/otpcode.php');
 			}else{
