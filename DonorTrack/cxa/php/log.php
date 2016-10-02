@@ -28,6 +28,8 @@ if(!isset($loginerror)){
 					<input type="text" name="username" class="logintext"/><br/>
 					&nbsp;Password:<br/>
 					<input type="password" name="password" class="logintext"/><br/>
+					&nbsp;One-time Password:<br/>
+					<input type="number" name="otp" class="logintext"/><br/>
 					&nbsp;<input type="checkbox" name="rememberme" />Remember Me<br/>
 					<input  type="submit" style="position: absolute; height: 0px; width: 0px; border: none; padding: 0px;" hidefocus="true" tabindex="-1"/>
 					<?php

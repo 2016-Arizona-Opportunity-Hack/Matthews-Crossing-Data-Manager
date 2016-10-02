@@ -8,6 +8,7 @@ If not, to view a copy of the license, visit https://creativecommons.org/license
 -->
 
 <?php
+include('php/ga.php');
 include('php/guestsession.php');
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -18,13 +19,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 				$passwd=password_hash($conn->escape_string($_POST['password']),PASSWORD_BCRYPT);
 				$name=$conn->escape_string($_POST['name']);
 				$email=$conn->escape_string($_POST['email']);
-				$sql = "INSERT INTO user_limbo (username, password, email, name) VALUES (\"$uname\", \"$passwd\", \"$email\", \"$name\")";
-				if($conn->query($sql)){
-					include('php/reg-ok.php');
-				}else{
-					$registererror="Database error!";
-					include('php/reg.php');
-				}
+				$otpsecret = Google2FA::generate_secret_key();
+				$sql = "INSERT INTO user_limbo (username, password, email, name, otpsecret) VALUES (\"$uname\", \"$passwd\", \"$email\", \"$name\", \"$otpsecret\")";
+				$_SESSION["otpsecret"]=$otpsecret;
+				$_SESSION["otpuri"]='otpauth://totp/MCDM:'.$uname.'@CXA?secret='.$otpsecret;
+				$_SESSION["regsql"]=$sql;
+				header('Location: /cxa/otpcode.php');
 			}else{
 				$registererror="Password must be 8 or more characters long.";
 				include('php/reg.php');
