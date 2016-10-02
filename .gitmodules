@@ -1,0 +1,3 @@
+[submodule "Email Sender/CXA-UI"]
+	path = Email Sender/CXA-UI
+	url = https://github.com/pixelfelon/CXA-UI.git
