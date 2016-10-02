@@ -351,6 +351,7 @@ body {
 }
 .fright{
 	float: right;
+	text-align: right;
 }
 .ttc{
 	position: fixed;
@@ -421,7 +422,54 @@ body {
 	border: none;
 	background: #FEFEFE;
 }
+/****************** MCDM DonorTrack Specific */
 .ilabel{
 	display: inline-block;
+	min-width: 40%;
 	margin: 4px 0px 2px 0px;
+}
+#results {
+	height: 200px;
+	overflow-y: scroll;
+}
+.resitem {
+	color: black;
+	padding: 4px 10px;
+	background: #eee;
+	cursor: pointer;
+}
+.resitem:hover {
+	background: #e8e8e8;
+}
+.resitem:active {
+	background: #ddd;
+}
+.resitem:nth-child(even) {
+	background: #ddf;
+}
+.resitem:nth-child(even):hover {
+	background: #d8d8ff;
+}
+.resitem:nth-child(even):active {
+	background: #ccf;
+}
+.resitem:first-child {
+	height: 0px;
+	cursor: default;
+	background: #eee;
+}
+.resleft, .resright {
+	margin: 2px 4px;
+	padding: 0px;
+	font-family: "Courier New", monospace;
+}
+.resright {
+	text-align: right;
+}
+.resitem.nohover {
+	cursor: default;
+	background: #eee;
+}
+.resitem.nohover:nth-child(even) {
+	background: #ddf;
 }

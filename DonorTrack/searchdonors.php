@@ -2,6 +2,7 @@
 include('cxa/php/session.php');
 include('cxa/meta.php');
 boot_user(2);
+include('donorinter.php');
 
 if(empty($_SESSION["donorSearch"])){
 	$_SESSION["donorSearch"] = null;
@@ -20,45 +21,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		<link rel="stylesheet" type="text/css" href="cxa/css/cxa-ui.css">
 		<link rel="icon" type="image/png" href="cxa/img/favicon.ico" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
-		<style>
-			#results {
-				height: 200px;
-				overflow-y: scroll;
-			}
-			.resitem {
-				color: black;
-				padding: 4px 10px;
-				background: #eee;
-				cursor: pointer;
-			}
-			.resitem:hover {
-				background: #e8e8e8;
-			}
-			.resitem:active {
-				background: #ddd;
-			}
-			.resitem:nth-child(even) {
-				background: #ddf;
-			}
-			.resitem:nth-child(even):hover {
-				background: #d8d8ff;
-			}
-			.resitem:nth-child(even):active {
-				background: #ccf;
-			}
-			.resitem:first-child {
-				height: 0px;
-				cursor: default;
-				background: #eee;
-			}
-			.resleft, .resright {
-				margin: 2px 4px;
-				padding: 0px;
-			}
-			.resright {
-				text-align: right;
-			}
-		</style>
 	</head>
 	<body>
 		<div id="main" style="min-height: 200px;">
