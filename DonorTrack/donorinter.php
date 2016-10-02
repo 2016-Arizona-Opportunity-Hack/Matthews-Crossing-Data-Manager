@@ -2,21 +2,22 @@
 
 function refreshDonorList(){
 	$newDonorList = Array();
-	//get the donor list - mockup below
-	$newDonorList[1] = Array();
-	$newDonorList[1]["firstname"] = "John";
-	$newDonorList[1]["lastname"] = "Smith";
-	$newDonorList[1]["email"] = "js193048@gmail.com";
-	$newDonorList[2] = Array();
-	$newDonorList[2]["firstname"] = "Jane";
-	$newDonorList[2]["lastname"] = "Doe";
-	$newDonorList[2]["email"] = "jd938742@gmail.com";
+	global $pypath, $fbm_user, $fbm_pass;
+	$pyInter = shell_exec("$pypath \"../FBM Utility/FoodBankManager.py\" \"donors\" \"$fbm_user\" \"$fbm_pass\"");
+	$interList = json_decode(preg_replace('/,\s*([\]}])/m', '$1', "{\"donors\":[".substr($pyInter,0,-7)."]}"), true)["donors"];
+	error_log(json_encode($interList));
+	foreach($interList as $interDonor){
+		$newDonorID = intval($interDonor["Donor ID"]);
+		$newDonorList[$newDonorID] = Array();
+		$newDonorList[$newDonorID]["firstname"] = $interDonor["First Name"];
+		$newDonorList[$newDonorID]["lastname"] = $interDonor["Last Name"];
+		$newDonorList[$newDonorID]["email"] = $interDonor["Email Address"];
+	}
 	$_SESSION["donorlist"] = $newDonorList;	
 }
 
 function nextDonorID(){
-	//get the next autoincrement id - placeholder
-	return 3;
+	return max(array_keys($_SESSION["donorlist"]))+1;
 }
 
 refreshDonorList();

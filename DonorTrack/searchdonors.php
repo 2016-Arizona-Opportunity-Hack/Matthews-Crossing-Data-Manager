@@ -4,14 +4,22 @@ include('cxa/meta.php');
 boot_user(2);
 include('donorinter.php');
 
-if(empty($_SESSION["donorSearch"])){
-	$_SESSION["donorSearch"] = null;
-}
-$donorSearch = $_SESSION["donorSearch"];
+$donorSearch = false;
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 	if( !empty($_POST["firstname"]) || !empty($_POST["lastname"]) || !empty($_POST["email"]) ){
-		//search the database
+		$results = Array();
+		$firstname = empty($_POST["firstname"]) ? "" : $_POST["firstname"];
+		$lastname = empty($_POST["lastname"]) ? "" : $_POST["lastname"];
+		$email = empty($_POST["email"]) ? "" : $_POST["email"];
+		foreach($_SESSION["donorlist"] as $donorid => $donor){
+			if(	   (!$firstname || stristr($donor["firstname"], $firstname) !== false)
+				&& (!$lastname || stristr($donor["lastname"], $lastname) !== false)
+				&& (!$email || stristr($donor["email"], $email) !== false)){
+				$results[$donorid] = $donor;
+			}
+		}
+		$donorSearch = $results;
 	}
 }
 ?>
@@ -36,11 +44,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 					echo '<div class="resitem"></div>';
 					if(!empty($donorSearch)){
 						foreach($donorSearch as $donorid => $donor){
-							echo '<div id="'.$donorid.'" class="resitem">';
+							echo '<a href="/takedonation.php?donorid='.$donorid.'" class="resitem">';
 							echo '<p class="resleft">'.$donor["firstname"].' '.$donor["lastname"].'</p>';
 							echo '<p class="resright">'.$donor["email"].'</p>';
-							echo '</div>';
+							echo '</a>';
 						}
+						echo '<a class="resitem" href="/adddonor.php">';
+						echo '<p class="resleft">Add New Donor</p>';
+						echo '</a>';
 					}else{
 						echo '<div class="resitem">No records found. NYI</div>';
 					}
@@ -62,6 +73,5 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 	</body>
 </html>
 <?php
-$_SESSION["donorSearch"] = $donorSearch;
 $conn->close();
 ?>
