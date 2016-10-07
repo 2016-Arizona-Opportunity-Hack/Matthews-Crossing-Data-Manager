@@ -2,23 +2,84 @@
 require_once('php/ga.php');
 require_once('php/guestsession.php');
 
-if($_SERVER['REQUEST_METHOD'] == 'POST' && !empty($_SESSION['regsql']) && !empty($_SESSION['otpsecret']) && !empty($_POST["otp"])){
-	if(Google2FA::verify_key($_SESSION["otpsecret"],$_POST["otp"])){
-		unset($_SESSION["otpsecret"]);
-		unset($_SESSION["otpuri"]);
-		if($conn->query($_SESSION["regsql"])){
-			unset($_SESSION["regsql"]);
-			include('php/reg-ok.php');
+if($_SERVER['REQUEST_METHOD'] == 'POST'){
+	if(!empty($_SESSION['regsql']) && !empty($_SESSION['otpsecret']) && !empty($_POST["otp"])){ //Onboarding
+		if(Google2FA::verify_key($_SESSION["otpsecret"],$_POST["otp"])){
+			unset($_SESSION["otpsecret"]);
+			unset($_SESSION["otpuri"]);
+			if($conn->query($_SESSION["regsql"])){
+				unset($_SESSION["regsql"]);
+				include('php/reg-ok.php');
+			}else{
+				$registererror="Database error!";
+				unset($_SESSION["regsql"]);
+				include('php/reg.php');
+			}
 		}else{
-			$registererror="Database error!";
-			unset($_SESSION["regsql"]);
-			include('php/reg.php');
+			$registererror="Incorrect OTP!";
+			include('php/reg-img.php');
 		}
-	}else{
+	}elseif(!empty($_SESSION["userdata"]) && !empty($_SESSION['otpsecret']) && !empty($_POST["otp"])){ //Set up 2FA for existing user
+		if(Google2FA::verify_key($_SESSION["otpsecret"],$_POST["otp"])){
+			if($conn->query('UPDATE users SET otpsecret="'.$_SESSION["otpsecret"].'" WHERE userid="'.$_SESSION["userdata"]["userid"].'"')){
+				$_SESSION["userdata"]["otpsecret"]=$_SESSION["otpsecret"];
+				unset($_SESSION["otpsecret"]);
+				unset($_SESSION["otpuri"]);
+				unset($_SESSION["regsql"]);
+				$regmsg="Two-Factor Authentication (OTP) successfully reset.";
+				include('php/reg-ok.php');
+			}else{
+				$registererror="Database error!";
+				include('php/reg-img.php');
+			}
+		}else{
+			$registererror="Incorrect OTP!";
+			include('php/reg-img.php');
+		}
+	}elseif(isset($_POST["otp"])){
+		$registererror="Enter your OTP.";
 		include('php/reg-img.php');
 	}
 }elseif(!empty($_SESSION['regsql']) && !empty($_SESSION['otpuri'])){
 	include('php/reg-img.php');
+}elseif(!empty($_SESSION['userdata'])){
+	if(isset($_GET["recall"])){
+		$_SESSION['otpuri']='otpauth://totp/MCDM:'.$_SESSION["userdata"]["username"].'@CXA?secret='.$_SESSION["userdata"]["otpsecret"];
+		$imgtitle="MCDM DonorTrack - Set up 2FA";
+		$imgsrc="/cxa/otpimg.php";
+		include('php/imgframe.php');
+	}elseif(isset($_GET["reset"])){
+		$CONFOPTS=[
+			"title" => "MCDM DonorTrack - Reset 2FA",
+			"message" => "Are you sure you want to reset Two-Factor Authentication?<br/>This will cause any OTP generators you have connected to stop working.",
+			"posAction" => $_SERVER["PHP_SELF"]."?reset-confirmed",
+			"negAction" => "/index.php",
+		];
+		include('php/confirm.php');
+	}elseif(isset($_GET["reset-confirmed"])){
+		$_SESSION['otpsecret']=Google2FA::generate_secret_key();
+		$_SESSION['otpuri']='otpauth://totp/MCDM:'.$_SESSION["userdata"]["username"].'@CXA?secret='.$_SESSION["otpsecret"];
+		include('php/reg-img.php');
+	}elseif(isset($_GET["remove"])){
+		$CONFOPTS=[
+			"title" => "MCDM DonorTrack - Remove 2FA",
+			"message" => "Are you sure you want to remove Two-Factor Authentication (your OTP)?",
+			"posAction" => $_SERVER["PHP_SELF"]."?remove-confirmed",
+			"negAction" => "/index.php",
+		];
+		include('php/confirm.php');
+	}elseif(isset($_GET["remove-confirmed"])){
+		if($conn->query('UPDATE users SET otpsecret="" WHERE userid="'.$_SESSION["userdata"]["userid"].'"')){
+			$_SESSION["userdata"]["otpsecret"]="";
+			$regmsg="Two-Factor Authentication (OTP) successfully removed.";
+			include('php/reg-ok.php');
+		}else{
+			$regerr="Database error!";
+			include('php/reg-ok.php');
+		}
+	}else{
+		exit();
+	}
 }else{
 	include('php/reg.php');
 }

@@ -385,6 +385,18 @@ body {
 	float: right;
 	text-align: right;
 }
+.dual-left{
+	width: 133px;
+	border-right: 1px solid #5CA122;
+	float: left;
+	text-align: left;
+}
+.dual-right{
+	width: 133px;
+	border-left: 1px solid #5CA122;
+	float: right;
+	text-align: right;
+}
 .hdrbtn{
 	display: inline-block;
 	position: relative;
