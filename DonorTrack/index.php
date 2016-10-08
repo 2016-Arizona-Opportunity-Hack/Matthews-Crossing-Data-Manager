@@ -83,6 +83,9 @@ if(isset($_SESSION["userdata"])){
 						Enable OTP
 					</a>
 					<?php } ?>
+					<a class="action stored" href="./cxa/reset.php">
+						Change Password
+					</a>
 					<a class="action stored" href="./cxa/logout.php">
 						Logout
 						<?php echo $_SESSION['userdata']['username']; ?>

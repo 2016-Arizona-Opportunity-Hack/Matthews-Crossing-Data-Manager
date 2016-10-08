@@ -9,6 +9,10 @@ If not, to view a copy of the license, visit https://creativecommons.org/license
 */
 include("php/session.php");
 
+function generateResetLink($authenticator){
+	return (!empty($_SERVER['HTTPS']) ? 'https' : 'http')."://".$_SERVER["HTTP_HOST"].dirname($_SERVER["PHP_SELF"])."/reset.php?token=".strtr(base64_encode($authenticator), '+/=', '-_,');
+}
+
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 	if(!empty($_SESSION['userid']) && !empty($_POST["action"])){
 		switch($_POST["action"]){
@@ -95,6 +99,34 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 					echo "unauthorized";
 				}
 				break;
+			case "resetuserpassword":
+				if(authorized(4)){
+					$authenticator = openssl_random_pseudo_bytes(33);
+					$token = hash('sha256', $authenticator);
+					$expires = time() + 86400;
+					$userid = $conn->escape_string($_POST['data']);
+					$result=$conn->query("SELECT * FROM password_reset WHERE userid=$userid");
+					if($result && $result->num_rows==0){
+						if($conn->query("INSERT INTO password_reset (userid, token, expires) VALUES ($userid, \"$token\", $expires)")){
+							echo generateResetLink($authenticator);
+						}else{
+							echo "dbe";
+							error_log($conn->error);
+						}
+					}elseif($result){
+						if($conn->query("UPDATE password_reset SET token=\"$token\", expires=$expires WHERE userid=$userid LIMIT 1")){
+							echo generateResetLink($authenticator);
+						}else{
+							echo "dbe";
+							error_log($conn->error);
+						}
+					}else{
+						echo "dbe";
+						error_log($conn->error);
+					}
+				}else{
+					echo "unauthorized";
+				}
 			case "getlimbousers":
 				if(authorized(3)){
 					$mquery="SELECT * FROM user_limbo";

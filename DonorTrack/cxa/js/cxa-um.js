@@ -34,7 +34,7 @@ var tUsers={
 		mandatory:true
 	},
 	'otpsecret':{
-		type:'number',
+		type:'text',
 		style:'18',
 		mandatory:false
 	},
@@ -162,7 +162,7 @@ function populateTable(selector,array,data,table,post){
 					c.props.del=$(ts.div).appendTo(c[i]).addClass('delbtn').click({c:c},function(event){delRow(event.data.c,table);});
 					break;
 				case "passwd":
-					c[i]=$(ts.td).appendTo(c.row).addClass('col-'+(table[i].style));
+					c[i]=$(ts.td).appendTo(c.row).addClass('col-'+(table[i].style)).html("<a onclick=\"getResetLink("+data[row]["userid"]+")\">get reset link</a>");
 					break;
 			}
 		}
@@ -313,4 +313,15 @@ function doUsers(){
 			populateTable('#userboard', cElements, data, tUsers);
 		}
 	},"json");
+}
+
+function getResetLink(id){
+	$.post(interAddress,{action:"resetuserpassword",data:id},function(data){
+		if(typeof data === "string" && data.includes("http")){
+			data = data.substring(0, data.length-2);
+			window.open(data, '_blank').focus();
+		}else{
+			console.log(data);
+		}
+	},"text");
 }
