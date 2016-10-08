@@ -14,7 +14,7 @@ boot_user(4);
 ?>
 <html>
 	<head>
-		<title>CXA Auth Demo - Account Requests</title>
+		<title><?=$sitetitle?> - Account Requests</title>
 		<link rel="stylesheet" type="text/css" href="css/cxa-ui.css">
 		<link rel="stylesheet" type="text/css" href="css/cxa-um.css">
 		<link rel="icon" type="image/png" href="./img/favicon.ico" />

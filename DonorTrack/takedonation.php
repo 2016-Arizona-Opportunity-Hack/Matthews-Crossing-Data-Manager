@@ -65,7 +65,7 @@ if(	   !empty($_POST["donorid"])
 					echo '</div>';
 					echo '</div>';
 			?>
-				<form action="takedonation.php" method="post" id="login" style="height: auto; padding: 10px 15px; width: 270px; margin-bottom: 10px;">
+				<form action="takedonation.php" method="post" id="login" style="height: auto; padding: 10px 15px; width: 270px; margin-bottom: 40px;">
 					<input type="hidden" name="donorid" value="<?php echo $_GET["donorid"] ?>" />
 					<p class="ilabel">Donation Type</p>
 					<input type="text" name="type" class="registertext" style="width: 100%;" />

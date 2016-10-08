@@ -25,7 +25,7 @@ if(!empty($_SESSION["userid"])){
 }
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
-	if( !empty($_POST["username"]) && !empty($_POST["password"]) && !empty($_POST["otp"]) ){
+	if( !empty($_POST["username"]) && !empty($_POST["password"]) ){
 		if($_SESSION["logintries"]>=5){
 			if(!isset($_SESSION["loginretry"])){
 				$_SESSION["loginretry"]=time()+20;
@@ -47,8 +47,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 			if ($result->num_rows == 1) {
 				$row=$result->fetch_assoc();
 				if(password_verify($_POST["password"],$row["password"])){
-					error_log("OTP Secret: ".$row["otpsecret"].", OTP: ".$_POST["otp"]);
-					if(Google2FA::verify_key($row["otpsecret"],$_POST["otp"])){
+					if( $row["otpsecret"] == "" || ( !empty($_POST["otp"]) && Google2FA::verify_key($row["otpsecret"],$_POST["otp"]) ) ){
 						$_SESSION["userdata"]=$row;
 						$_SESSION["userid"]=$row["userid"];
 						if(!empty($_POST["rememberme"])){

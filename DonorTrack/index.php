@@ -12,6 +12,7 @@ session_start();
 $_SESSION["return"]="/index.php";
 include('cxa/php/session.php');
 include('cxa/meta.php');
+if(isset($_SESSION["userdata"])){
 ?>
 <html>
 	<head>
@@ -63,15 +64,39 @@ include('cxa/meta.php');
 				</div>
 				';}
 				?>
-				<a class="action" href="./cxa/logout.php">
-					Logout
-					<?php echo $_SESSION['userdata']['username']; ?>
-				</a>
+				<div class="action drawer-handle" id="dh-account">
+					Account
+				</div>
+				<div class="drawer" id="d-account">
+					<?php if($_SESSION['userdata']['otpsecret'] != ""){ ?>
+					<a class="action stored" href="./cxa/otpcode.php?recall">
+						Recall OTP
+					</a>
+					<a class="action stored" href="./cxa/otpcode.php?reset">
+						Reset OTP
+					</a>
+					<a class="action stored" href="./cxa/otpcode.php?remove">
+						Remove OTP
+					</a>
+					<?php }else{ ?>
+					<a class="action stored" href="./cxa/otpcode.php?reset">
+						Enable OTP
+					</a>
+					<?php } ?>
+					<a class="action stored" href="./cxa/reset.php">
+						Change Password
+					</a>
+					<a class="action stored" href="./cxa/logout.php">
+						Logout
+						<?php echo $_SESSION['userdata']['username']; ?>
+					</a>
+				</div>
 			</div>
 			<div id="footer" class="loginbar"><?php cxa_footer() ?></div>
 		</div>
 	</body>
 </html>
 <?php
+}
 $conn->close();
 ?>

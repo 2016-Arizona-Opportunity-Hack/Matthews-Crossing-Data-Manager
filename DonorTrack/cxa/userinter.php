@@ -9,11 +9,15 @@ If not, to view a copy of the license, visit https://creativecommons.org/license
 */
 include("php/session.php");
 
+function generateResetLink($authenticator){
+	return (!empty($_SERVER['HTTPS']) ? 'https' : 'http')."://".$_SERVER["HTTP_HOST"].dirname($_SERVER["PHP_SELF"])."/reset.php?token=".strtr(base64_encode($authenticator), '+/=', '-_,');
+}
+
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 	if(!empty($_SESSION['userid']) && !empty($_POST["action"])){
 		switch($_POST["action"]){
 			case "approveuser":
-				if(authorized(4)){
+				if(authorized(3)){
 					$luid=$conn->escape_string($_POST["data"]['userid']);
 					$authlevel=$conn->escape_string($_POST["data"]['authlevel']);
 					$qry="SELECT * FROM user_limbo WHERE userid=\"$luid\" LIMIT 1";
@@ -42,7 +46,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 				}
 				break;
 			case "dellimbouser":
-				if(authorized(4)){
+				if(authorized(3)){
 					$qry='DELETE FROM user_limbo WHERE userid="'.$conn->escape_string($_POST['data']['userid']).'" LIMIT 1';
 					if($conn->query($qry)){
 						echo "ok";
@@ -57,9 +61,20 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 			case "setuser":
 				if(authorized(4) && $_POST['data']['userid']!=777){
 					if(!empty($_POST["data"]["password"])){
-						$qry='UPDATE users SET username="'.$conn->escape_string($_POST['data']['username']).'", name="'.$conn->escape_string($_POST['data']['name']).'", email="'.$conn->escape_string($_POST['data']['email']).'", password="'.password_hash($conn->escape_string($_POST['data']['password']),PASSWORD_BCRYPT).'", authorization="'.$conn->escape_string($_POST['data']['authorization']).'" WHERE userid="'.$conn->escape_string($_POST['data']['userid']).'"';
+						$qry='UPDATE users SET username="'.$conn->escape_string($_POST['data']['username']).
+							'", name="'.$conn->escape_string($_POST['data']['name']).
+							'", email="'.$conn->escape_string($_POST['data']['email']).
+							'", password="'.password_hash($conn->escape_string($_POST['data']['password']),PASSWORD_BCRYPT).
+							'", otpsecret="'.$conn->escape_string($_POST['data']['otpsecret']).
+							'", authorization="'.$conn->escape_string($_POST['data']['authorization']).
+							'" WHERE userid="'.$conn->escape_string($_POST['data']['userid']).'"';
 					}else{
-						$qry='UPDATE users SET username="'.$conn->escape_string($_POST['data']['username']).'", name="'.$conn->escape_string($_POST['data']['name']).'", email="'.$conn->escape_string($_POST['data']['email']).'", authorization="'.$conn->escape_string($_POST['data']['authorization']).'" WHERE userid="'.$conn->escape_string($_POST['data']['userid']).'"';
+						$qry='UPDATE users SET username="'.$conn->escape_string($_POST['data']['username']).
+							'", name="'.$conn->escape_string($_POST['data']['name']).
+							'", email="'.$conn->escape_string($_POST['data']['email']).
+							'", otpsecret="'.$conn->escape_string($_POST['data']['otpsecret']).
+							'", authorization="'.$conn->escape_string($_POST['data']['authorization']).
+							'" WHERE userid="'.$conn->escape_string($_POST['data']['userid']).'"';
 					}
 					if($conn->query($qry)){
 						echo "ok";
@@ -84,8 +99,36 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 					echo "unauthorized";
 				}
 				break;
-			case "getlimbousers":
+			case "resetuserpassword":
 				if(authorized(4)){
+					$authenticator = openssl_random_pseudo_bytes(33);
+					$token = hash('sha256', $authenticator);
+					$expires = time() + 86400;
+					$userid = $conn->escape_string($_POST['data']);
+					$result=$conn->query("SELECT * FROM password_reset WHERE userid=$userid");
+					if($result && $result->num_rows==0){
+						if($conn->query("INSERT INTO password_reset (userid, token, expires) VALUES ($userid, \"$token\", $expires)")){
+							echo generateResetLink($authenticator);
+						}else{
+							echo "dbe";
+							error_log($conn->error);
+						}
+					}elseif($result){
+						if($conn->query("UPDATE password_reset SET token=\"$token\", expires=$expires WHERE userid=$userid LIMIT 1")){
+							echo generateResetLink($authenticator);
+						}else{
+							echo "dbe";
+							error_log($conn->error);
+						}
+					}else{
+						echo "dbe";
+						error_log($conn->error);
+					}
+				}else{
+					echo "unauthorized";
+				}
+			case "getlimbousers":
+				if(authorized(3)){
 					$mquery="SELECT * FROM user_limbo";
 					if($result=$conn->query($mquery)){
 						$matches=array();

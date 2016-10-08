@@ -8,14 +8,14 @@ If not, to view a copy of the license, visit https://creativecommons.org/license
 -->
 
 <?php
-include('meta.php');
+require_once('meta.php');
 if(!isset($registererror)){
 	$registererror='';
 }
 ?>
 <html>
 	<head>
-		<title>MCDM DonorTrack Registration</title>
+		<title><?=$GLOBALS["sitetitle"]?> - Registration</title>
 		<link rel="stylesheet" type="text/css" href="css/cxa-ui.css">
 		<link rel="icon" type="image/png" href="./img/favicon.ico" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,7 +23,7 @@ if(!isset($registererror)){
 	<body>
 		<form action="register.php" method="post" id="main">
 			<div id="topbar" class="loginbar noselect"><?php cxa_header() ?></div>
-			<div id="login" style="height:300px;">
+			<div id="login" style="padding-bottom: 5px;">
 					&nbsp;Your (Real) Name:<br/>
 					<input type="text" name="name" class="registertext"/><br/>
 					&nbsp;Email Address:<br/>
@@ -33,9 +33,10 @@ if(!isset($registererror)){
 					&nbsp;Password:<br/>
 					<input type="password" name="password" class="registertext"/><br/>
 					&nbsp;Confirm Password:<br/>
-					<input type="password" name="password_conf" class="registertext"/><br/>
+					<input type="password" name="password_conf" class="registertext" style="margin-bottom:10px;"/><br/>
+					&nbsp;<input type="checkbox" name="twofactor" />Enable Two-Factor Auth
 					<?php
-					if($registererror){
+					if(!empty($registererror)){
 						echo "<div id=\"loginerror\">".$registererror."</div>";
 					}
 					?>

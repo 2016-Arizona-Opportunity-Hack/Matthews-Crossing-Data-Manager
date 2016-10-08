@@ -63,7 +63,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 			<?php
 				}else{
 			?>
-				<form action="adddonor.php" method="post" id="login" style="height: auto; padding: 10px 15px; width: 270px; margin-bottom: 10px;">
+				<form action="adddonor.php" method="post" id="login" style="height: auto; padding: 10px 15px; width: 270px; margin-bottom: 40px;">
 					<p class="ilabel">First Name</p>
 					<p class="ilabel fright">Last Name</p>
 					<input type="text" name="firstname" class="registertext" style="width: 49%; margin-right: 1%" /><!--

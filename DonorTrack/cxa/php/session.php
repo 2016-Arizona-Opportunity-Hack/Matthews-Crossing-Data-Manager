@@ -108,7 +108,6 @@ if (empty($_SESSION['userid']) && !empty($_COOKIE['remember'])) {
 		}else{end_session();}
 	}else{end_session();}
 }elseif(empty($_SESSION['userid']) && strpos($_SERVER['PHP_SELF'],'login.php')===false){
-	error_log("Sending user to login");
 	header('Location: /cxa/login.php');
 }
 

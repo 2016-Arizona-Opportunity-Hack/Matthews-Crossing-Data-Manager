@@ -14,7 +14,7 @@ boot_user(4);
 ?>
 <html>
 	<head>
-		<title>CXA Auth Demo - User Management</title>
+		<title><?=$sitetitle?> - User Management</title>
 		<link rel="stylesheet" type="text/css" href="css/cxa-ui.css">
 		<link rel="stylesheet" type="text/css" href="css/cxa-um.css">
 		<link rel="icon" type="image/png" href="./img/favicon.ico" />
@@ -33,10 +33,11 @@ boot_user(4);
 					<table class="teamtable alpha">
 						<tr>
 							<td class="col-pre">ID</td>
-							<td class="col-20">Name</td>
-							<td class="col-20">Username</td>
-							<td class="col-20">E-Mail</td>
-							<td class="col-20">New Password</td>
+							<td class="col-18">Name</td>
+							<td class="col-18">Username</td>
+							<td class="col-18">E-Mail</td>
+							<td class="col-18">New Password</td>
+							<td class="col-18">TOTP Secret</td>
 							<td class="col-7 hastip" tip="Authorization Level">Auth</td>
 							<td class="col-post final-column"></td>
 						</tr>
