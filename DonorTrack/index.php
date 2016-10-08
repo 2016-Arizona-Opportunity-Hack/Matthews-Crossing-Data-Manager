@@ -12,6 +12,7 @@ session_start();
 $_SESSION["return"]="/index.php";
 include('cxa/php/session.php');
 include('cxa/meta.php');
+if(isset($_SESSION["userdata"])){
 ?>
 <html>
 	<head>
@@ -93,5 +94,6 @@ include('cxa/meta.php');
 	</body>
 </html>
 <?php
+}
 $conn->close();
 ?>
