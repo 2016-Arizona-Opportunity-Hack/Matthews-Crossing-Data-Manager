@@ -57,9 +57,20 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 			case "setuser":
 				if(authorized(4) && $_POST['data']['userid']!=777){
 					if(!empty($_POST["data"]["password"])){
-						$qry='UPDATE users SET username="'.$conn->escape_string($_POST['data']['username']).'", name="'.$conn->escape_string($_POST['data']['name']).'", email="'.$conn->escape_string($_POST['data']['email']).'", password="'.password_hash($conn->escape_string($_POST['data']['password']),PASSWORD_BCRYPT).'", authorization="'.$conn->escape_string($_POST['data']['authorization']).'" WHERE userid="'.$conn->escape_string($_POST['data']['userid']).'"';
+						$qry='UPDATE users SET username="'.$conn->escape_string($_POST['data']['username']).
+							'", name="'.$conn->escape_string($_POST['data']['name']).
+							'", email="'.$conn->escape_string($_POST['data']['email']).
+							'", password="'.password_hash($conn->escape_string($_POST['data']['password']),PASSWORD_BCRYPT).
+							'", otpsecret="'.$conn->escape_string($_POST['data']['otpsecret']).
+							'", authorization="'.$conn->escape_string($_POST['data']['authorization']).
+							'" WHERE userid="'.$conn->escape_string($_POST['data']['userid']).'"';
 					}else{
-						$qry='UPDATE users SET username="'.$conn->escape_string($_POST['data']['username']).'", name="'.$conn->escape_string($_POST['data']['name']).'", email="'.$conn->escape_string($_POST['data']['email']).'", authorization="'.$conn->escape_string($_POST['data']['authorization']).'" WHERE userid="'.$conn->escape_string($_POST['data']['userid']).'"';
+						$qry='UPDATE users SET username="'.$conn->escape_string($_POST['data']['username']).
+							'", name="'.$conn->escape_string($_POST['data']['name']).
+							'", email="'.$conn->escape_string($_POST['data']['email']).
+							'", otpsecret="'.$conn->escape_string($_POST['data']['otpsecret']).
+							'", authorization="'.$conn->escape_string($_POST['data']['authorization']).
+							'" WHERE userid="'.$conn->escape_string($_POST['data']['userid']).'"';
 					}
 					if($conn->query($qry)){
 						echo "ok";

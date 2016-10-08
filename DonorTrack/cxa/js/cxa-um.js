@@ -15,23 +15,28 @@ var tUsers={
 	},
 	'name':{
 		type:'text',
-		style:'20',
+		style:'18',
 		mandatory:true
 	},
 	'username':{
 		type:'text',
-		style:'20',
+		style:'18',
 		mandatory:true
 	},
 	'email':{
 		type:'text',
-		style:'20',
+		style:'18',
 		mandatory:true
 	},
 	'password':{
 		type:'passwd',
-		style:'20',
+		style:'18',
 		mandatory:true
+	},
+	'otpsecret':{
+		type:'number',
+		style:'18',
+		mandatory:false
 	},
 	'authorization':{
 		type:'number',
