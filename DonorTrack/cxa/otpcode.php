@@ -45,12 +45,12 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 }elseif(!empty($_SESSION['userdata'])){
 	if(isset($_GET["recall"])){
 		$_SESSION['otpuri']='otpauth://totp/MCDM:'.$_SESSION["userdata"]["username"].'@CXA?secret='.$_SESSION["userdata"]["otpsecret"];
-		$imgtitle="MCDM DonorTrack - Set up 2FA";
+		$imgtitle="Set up 2FA";
 		$imgsrc="/cxa/otpimg.php";
 		include('php/imgframe.php');
 	}elseif(isset($_GET["reset"])){
 		$CONFOPTS=[
-			"title" => "MCDM DonorTrack - Reset 2FA",
+			"title" => "Reset 2FA",
 			"message" => "Are you sure you want to reset Two-Factor Authentication?<br/>This will cause any OTP generators you have connected to stop working.",
 			"posAction" => $_SERVER["PHP_SELF"]."?reset-confirmed",
 			"negAction" => "/index.php",
@@ -62,7 +62,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		include('php/reg-img.php');
 	}elseif(isset($_GET["remove"])){
 		$CONFOPTS=[
-			"title" => "MCDM DonorTrack - Remove 2FA",
+			"title" => "Remove 2FA",
 			"message" => "Are you sure you want to remove Two-Factor Authentication (your OTP)?",
 			"posAction" => $_SERVER["PHP_SELF"]."?remove-confirmed",
 			"negAction" => "/index.php",

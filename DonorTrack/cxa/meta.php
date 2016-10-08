@@ -8,6 +8,7 @@ You should have received a copy of this license with CXA Auth LW.
 If not, to view a copy of the license, visit https://creativecommons.org/licenses/by-nc-sa/3.0/us/legalcode
 */
 
+$sitetitle="MCDM DonorTrack";
 function cxa_header($type=false,$url="/index.php"){
 	echo '<a id="toplogo" href="'.$url.'">MCDM DonorTrack</a>';
 	if($type){
@@ -21,6 +22,6 @@ function cxa_minheader($type=false,$url="landing.php"){
 	}
 }
 function cxa_footer(){
-	echo "&nbsp;MCDM DonorTrack &copy;2016 James Rowley - <a href=\"mailto:james@jrowley.me\">contact</a>";
+	echo "&nbsp;MCDM DonorTrack &copy;2016 J. Rowley, M. Omo, J. Woo - <a href=\"https://github.com/Opportunity-Hack-2016-AZ/Matthews-Crossing-Data-Manager\">github</a>";
 }
 ?>

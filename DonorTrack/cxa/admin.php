@@ -16,7 +16,7 @@ if(!authorized(4)){
 ?>
 <html>
 	<head>
-		<title>Admin Menu - CXA Auth LW</title>
+		<title><?=$sitetitle?> - Admin Menu</title>
 		<link rel="stylesheet" type="text/css" href="css/cxa-ui.css">
 		<link rel="icon" type="image/png" href="./img/favicon.ico" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">

@@ -15,7 +15,7 @@ if(!isset($registererror)){
 ?>
 <html>
 	<head>
-		<title>MCDM DonorTrack Registration</title>
+		<title><?=$sitetitle?> - Registration</title>
 		<link rel="stylesheet" type="text/css" href="css/cxa-ui.css">
 		<link rel="icon" type="image/png" href="./img/favicon.ico" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -23,7 +23,7 @@ if(!isset($registererror)){
 	<body>
 		<form action="register.php" method="post" id="main">
 			<div id="topbar" class="loginbar noselect"><?php cxa_header() ?></div>
-			<div id="login" style="height:300px;">
+			<div id="login" style="padding-bottom: 5px;">
 					&nbsp;Your (Real) Name:<br/>
 					<input type="text" name="name" class="registertext"/><br/>
 					&nbsp;Email Address:<br/>
