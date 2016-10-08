@@ -27,6 +27,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 				unset($_SESSION["otpuri"]);
 				unset($_SESSION["regsql"]);
 				$regmsg="Two-Factor Authentication (OTP) successfully reset.";
+				$regtitle="2FA Reset";
 				include('php/reg-ok.php');
 			}else{
 				$registererror="Database error!";
@@ -75,9 +76,11 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		if($conn->query('UPDATE users SET otpsecret="" WHERE userid="'.$_SESSION["userdata"]["userid"].'"')){
 			$_SESSION["userdata"]["otpsecret"]="";
 			$regmsg="Two-Factor Authentication (OTP) successfully removed.";
+			$regtitle="2FA Removed";
 			include('php/reg-ok.php');
 		}else{
 			$regerr="Database error!";
+			$regtitle="Error";
 			include('php/reg-ok.php');
 		}
 	}else{
