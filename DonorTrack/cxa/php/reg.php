@@ -33,7 +33,8 @@ if(!isset($registererror)){
 					&nbsp;Password:<br/>
 					<input type="password" name="password" class="registertext"/><br/>
 					&nbsp;Confirm Password:<br/>
-					<input type="password" name="password_conf" class="registertext"/><br/>
+					<input type="password" name="password_conf" class="registertext" style="margin-bottom:10px;"/><br/>
+					&nbsp;<input type="checkbox" name="twofactor" />Enable Two-Factor Auth
 					<?php
 					if($registererror){
 						echo "<div id=\"loginerror\">".$registererror."</div>";
