@@ -1,4 +1,4 @@
--- Adminer 4.2.5 MySQL dump
+-- CXA Auth LW Database configuration
 
 SET NAMES utf8;
 SET time_zone = '+00:00';
@@ -27,13 +27,14 @@ CREATE TABLE `users` (
   `name` varchar(45) DEFAULT NULL,
   `email` longtext,
   `authorization` int(11) unsigned NOT NULL DEFAULT '0' COMMENT '0=No Permissions1=Team Account2=Judge Account3=Competition Administrator4=Site Administrator',
+  `otpsecret` varchar(16),
   PRIMARY KEY (`userid`),
   UNIQUE KEY `userid_UNIQUE` (`userid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
-INSERT INTO `users` (`userid`, `username`, `password`, `name`, `email`, `authorization`) VALUES
-(1,	'admin',	'$2y$10$n/jZ9/PO59Asj6WrMZXl..ACi5nnPC3bDbk4LuLGrMHMqWlOhGKVa',	'Administrator',	'example@example.com',	4),
-(777,	'guest',	'heaven',	'guest',	NULL,	0);
+INSERT INTO `users` (`userid`, `username`, `password`, `name`, `email`, `authorization`, `otpsecret`) VALUES
+(1,	'admin',	'$2y$10$n/jZ9/PO59Asj6WrMZXl..ACi5nnPC3bDbk4LuLGrMHMqWlOhGKVa',	'Administrator',	'example@example.com',	4,	""),
+(777,	'guest',	'heaven',	'guest',	NULL,	0,	"");
 
 DROP TABLE IF EXISTS `user_limbo`;
 CREATE TABLE `user_limbo` (
@@ -44,6 +45,3 @@ CREATE TABLE `user_limbo` (
   `email` longtext,
   PRIMARY KEY (`userid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
-
--- 2016-10-02 05:14:56
