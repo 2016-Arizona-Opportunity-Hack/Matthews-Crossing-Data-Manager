@@ -13,7 +13,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 	if(!empty($_SESSION['userid']) && !empty($_POST["action"])){
 		switch($_POST["action"]){
 			case "approveuser":
-				if(authorized(4)){
+				if(authorized(3)){
 					$luid=$conn->escape_string($_POST["data"]['userid']);
 					$authlevel=$conn->escape_string($_POST["data"]['authlevel']);
 					$qry="SELECT * FROM user_limbo WHERE userid=\"$luid\" LIMIT 1";
@@ -42,7 +42,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 				}
 				break;
 			case "dellimbouser":
-				if(authorized(4)){
+				if(authorized(3)){
 					$qry='DELETE FROM user_limbo WHERE userid="'.$conn->escape_string($_POST['data']['userid']).'" LIMIT 1';
 					if($conn->query($qry)){
 						echo "ok";
@@ -96,7 +96,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 				}
 				break;
 			case "getlimbousers":
-				if(authorized(4)){
+				if(authorized(3)){
 					$mquery="SELECT * FROM user_limbo";
 					if($result=$conn->query($mquery)){
 						$matches=array();
