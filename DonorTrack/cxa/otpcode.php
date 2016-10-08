@@ -55,6 +55,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 			"posAction" => $_SERVER["PHP_SELF"]."?reset-confirmed",
 			"negAction" => "/index.php",
 		];
+		if(empty($_SESSION["userdata"]["otpsecret"])){
+			$CONFOPTS["message"]="Are you sure you want to set up Two-Factor Authentication (2FA)?<br/>A one-time password (OTP) will be required at every login.";
+		}
 		include('php/confirm.php');
 	}elseif(isset($_GET["reset-confirmed"])){
 		$_SESSION['otpsecret']=Google2FA::generate_secret_key();
