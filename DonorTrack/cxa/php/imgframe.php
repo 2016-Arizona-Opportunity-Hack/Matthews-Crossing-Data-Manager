@@ -1,9 +1,9 @@
 <?php
-include('meta.php');
+require_once('meta.php');
 ?>
 <html>
 	<head>
-		<title><?=$sitetitle?> - <?=$imgtitle?></title>
+		<title><?=$GLOBALS["sitetitle"]?> - <?=$imgtitle?></title>
 		<link rel="stylesheet" type="text/css" href="css/cxa-ui.css">
 		<link rel="icon" type="image/png" href="./img/favicon.ico" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
