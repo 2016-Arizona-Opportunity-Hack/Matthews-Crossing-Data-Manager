@@ -1,6 +1,8 @@
 <?php
+require_once('cxa/php/session.php');
 
 function refreshDonorList(){
+	$_SESSION["donorlist"] = "pending";
 	$newDonorList = Array();
 	global $pypath, $fbm_user, $fbm_pass;
 	$pyInter = shell_exec("$pypath \"../FBM Utility/FoodBankManager.py\" \"donors\" \"$fbm_user\" \"$fbm_pass\"");
@@ -22,5 +24,9 @@ function nextDonorID(){
 
 if(empty($_SESSION["donorlist"])){
 	refreshDonorList();
+}elseif($_SESSION["donorlist"]=="pending"){
+	while($_SESSION["donorlist"]=="pending"){
+		sleep(0.1);
+	}
 }
 ?>
