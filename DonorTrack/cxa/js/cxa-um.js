@@ -154,6 +154,11 @@ function populateTable(selector,array,data,table,post){
 					c[i]=$(ts.td).appendTo(c.row).addClass('col-'+(table[i].style));
 					c.props.edit=$(ts.div).appendTo(c[i]).addClass('editbtn').click({c:c},function(event){openRow(event.data.c,table);});
 					c.props.del=$(ts.div).appendTo(c[i]).addClass('delbtn').click({c:c},function(event){delRow(event.data.c,table);}).hide();
+					c.props.del.attr('tip', 'REMOVE USER').mousemove(function(){
+						ttc.show().css("left",event.pageX-127).css("top",event.pageY).text($(this).attr("tip"));
+					}).mouseout(function(event){
+						ttc.hide();
+					});
 					break;
 				case "approver":
 					c[i]=$(ts.td).appendTo(c.row).addClass('col-'+(table[i].style));
