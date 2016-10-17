@@ -35,9 +35,6 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 			.ilabel.ilabel {
 				margin: 0px;
 			}
-			.haserror {
-				outline: 1px solid red;
-			}
 		</style>
 	</head>
 	<body>
