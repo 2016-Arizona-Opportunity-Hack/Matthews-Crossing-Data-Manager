@@ -46,24 +46,6 @@ function verify_request(){
 	}
 }
 
-function tryField($field){
-	if(!empty($_GET[$field])){
-		return $_GET[$field];
-	}elseif(!empty($_POST[$field])){
-		return $_POST[$field];
-	}else{
-		return "";
-	}
-}
-
-function tryFieldValue($field){
-	$value=tryField($field);
-	if($value != ""){
-		return "value=\"$value\" ";
-	}
-	return "";
-}
-
 function show_form($regerr=""){
 ?>
 <html>
