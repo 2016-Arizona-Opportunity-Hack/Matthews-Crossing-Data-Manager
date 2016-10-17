@@ -96,6 +96,7 @@ class FBM():
 
 	def PostDonation(self, D_id, dollars, pounds, D_type):
 		donation_type = [
+			"",
 			"Individual Donor",
 			"Churches/Places of Worship",
 			"Grants/Foundations",
@@ -111,7 +112,7 @@ class FBM():
 		'action': 'Save Donation & close',
 		'donationType_id': '1',
 		'donation_at': time.strftime('%Y-%m-%d'),
-		'donations_1b458b4e6a': donation_type[D_type],
+		'donations_1b458b4e6a': donation_type[int(D_type)],
 		'donations_e0a1fae0a3': dollars,
 		'donations_f695e975c6': pounds
 		}
@@ -144,7 +145,7 @@ class FBM():
 
 if __name__ == '__main__':
 	if len(sys.argv) < 4:
-		print "Usage: 'task' 'user' 'pass' ect..."
+		print "Usage: 'task' 'user' 'pass' etc..."
 		exit(1)
 	q = FBM("mcfb.soxbox.co")
 	q.auth(sys.argv[2], sys.argv[3])
@@ -159,8 +160,8 @@ if __name__ == '__main__':
 	elif sys.argv[1] == "add_donor":
 		# json formatted input wih the following params
 		# first, last, email, street, tow, state, zip
-		q.AddDonor(sys.argv[4])
+		print q.AddDonor(sys.argv[4])
 	elif sys.argv[1] == "add_donation":
-		# type user pass doner_id pounds Donation_type
-		q.PostDonation(sys.argv[5], 0, sys.argv[6], sys.argv[7])
+		# type user pass donor_id pounds donation_type
+		print q.PostDonation(sys.argv[4], 0, sys.argv[5], sys.argv[6])
 	
