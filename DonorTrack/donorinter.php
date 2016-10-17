@@ -1,5 +1,6 @@
 <?php
 require_once('cxa/php/session.php');
+boot_user(2);
 
 function refreshDonorList(){
 	$_SESSION["donorlist"] = "pending";
@@ -21,6 +22,19 @@ function refreshDonorList(){
 
 function nextDonorID(){
 	return max(array_keys($_SESSION["donorlist"]))+1;
+}
+
+function addDonor($fields){
+	$params = Array("first", "last", "email", "street", "town", "state", "zip");
+	$json_inter = Array();
+	foreach($params as $param){
+		if(!empty($fields[$param])){
+			$json_inter[$param]=escapeshellcmd($fields[$param]);
+		}
+	}
+	$json = json_encode($json_inter);
+	return shell_exec("$pypath \"../FBM Utility/FoodBankManager.py\" \"add_donor\" \"$fbm_user\" \"$fbm_pass\" \"$json\"");
+	
 }
 
 if(empty($_SESSION["donorlist"]) || (!empty($_SESSION["donorlist_timestamp"]) && $_SESSION["donorlist_timestamp"]+3600<time())){

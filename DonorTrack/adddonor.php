@@ -8,7 +8,7 @@ $donorAdded = false;
 
 function hasError(){
 	if($_SERVER['REQUEST_METHOD'] == 'POST'){
-		if(tryField("firstname")=="" && tryField("lastname")==""){
+		if(tryField("first")=="" && tryField("last")==""){
 			return " haserror";
 		}else{
 			return "";
@@ -17,7 +17,7 @@ function hasError(){
 }
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
-	if(!empty($_POST["firstname"]) || !empty($_POST["lastname"])){
+	if(!empty($_POST["first"]) || !empty($_POST["last"])){
 		//record the donor
 		$donorAdded = true;
 	}
@@ -51,7 +51,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 					echo '<div id="results" style="width: 100%; border-bottom: 1px solid #aaa; overflow-y: hidden; height: auto;">';
 					echo '<div class="resitem nohover"></div>';
 					echo '<div class="resitem nohover">';
-					echo '<p class="resleft">'.tryField("firstname").' '.tryField("lastname").'</p>';
+					echo '<p class="resleft">'.tryField("first").' '.tryField("last").'</p>';
 					echo '<p class="resleft">'.tryField("address").'</p>';
 					echo '<p class="resleft">'.tryField("city").', '.tryField("state").' '.tryField("zipcode").'</p>';
 					echo '<p class="resright">'.tryField("email").'</p>';
@@ -75,14 +75,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 				<form action="adddonor.php" method="post" id="login" style="height: auto; padding: 10px 15px; width: 270px; margin-bottom: 40px;">
 					<p class="ilabel">First Name</p>
 					<p class="ilabel fright">Last Name</p>
-					<input type="text" name="firstname" class="registertext<?=hasError()?>" style="width: 49%; margin-right: 1%" <?=tryFieldValue("firstname")?>/><!--
-				--><input type="text" name="lastname" class="registertext<?=hasError()?>" style="width: 49%; margin-left: 1%" <?=tryFieldValue("lastname")?>/>
+					<input type="text" name="first" class="registertext<?=hasError()?>" style="width: 49%; margin-right: 1%" <?=tryFieldValue("first")?>/><!--
+				--><input type="text" name="last" class="registertext<?=hasError()?>" style="width: 49%; margin-left: 1%" <?=tryFieldValue("last")?>/>
 					<p class="ilabel">E-Mail Address</p>
 					<input type="text" name="email" class="registertext" style="width: 100%;" <?=tryFieldValue("email")?>/>
 					<p class="ilabel">Street Address</p>
 					<input type="text" name="address" class="registertext" style="width: 100%;" <?=tryFieldValue("address")?>/>
 					<p class="ilabel">City</p>
-					<input type="text" name="city" class="registertext" style="width: 100%;" <?=tryFieldValue("city")?>/>
+					<input type="text" name="town" class="registertext" style="width: 100%;" <?=tryFieldValue("town")?>/>
 					<p class="ilabel">State</p>
 					<p class="ilabel fright">ZIP Code</p>
 					<select name="state" class="registertext" style="width: 49%; margin-right: 1%;">
@@ -99,9 +99,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 						}
 						?>
 					</select><!--
-				 --><input type="number" name="zipcode" class="registertext" style="width: 49%; margin-left: 1%" <?=tryFieldValue("zipcode")?>/>
+				 --><input type="number" name="zipcode" class="registertext" style="width: 49%; margin-left: 1%" <?=tryFieldValue("zipcode")?>/><!--
 					<p class="ilabel">Phone Number</p>
-					<input type="number" name="phone" class="registertext" style="width: 100%;" <?=tryFieldValue("phone")?>/>
+					<input type="number" name="phone" class="registertext" style="width: 100%;" <?=tryFieldValue("phone")?>/>-->
 					<input type="submit" style="position: absolute; height: 0px; width: 0px; border: none; padding: 0px;" hidefocus="true" tabindex="-1">
 				</form>
 				<div id="bottombar" class="loginbar noselect" onclick="document.getElementById('login').submit(); return false;">Submit&nbsp;&nbsp;</div>
