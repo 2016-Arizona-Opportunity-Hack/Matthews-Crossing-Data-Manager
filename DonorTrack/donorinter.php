@@ -29,6 +29,8 @@ function addDonor($fields){
 	foreach($params as $param){
 		if(!empty($fields[$param])){
 			$json_inter[$param]=escapeshellcmd($fields[$param]);
+		}else{
+			$json_inter[$param]="";
 		}
 	}
 	$json = json_encode($json_inter);
@@ -38,6 +40,10 @@ function addDonor($fields){
 	}else{
 		shell_exec("$pypath \"../FBM Utility/FoodBankManager.py\" \"add_donor\" \"$fbm_user\" \"$fbm_pass\" \"".escapeshellarg($json)."\"");
 	}
+	$newDonorID=nextDonorID();
+	$_SESSION["donorlist"][$newDonorID]["firstname"] = $json_inter["first"];
+	$_SESSION["donorlist"][$newDonorID]["lastname"] = $json_inter["last"];
+	$_SESSION["donorlist"][$newDonorID]["email"] = $json_inter["email"];
 	return true;
 }
 

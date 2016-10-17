@@ -18,6 +18,7 @@ function hasError(){
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 	if(!empty($_POST["first"]) || !empty($_POST["last"])){
+		$newDonorID = nextDonorID();
 		if(addDonor($_POST)){
 			$donorAdded = true;
 		}
@@ -55,7 +56,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 					echo '<p class="resleft">'.tryField("first").' '.tryField("last").'</p>';
 					echo '<p class="resleft">'.tryField("email").'</p>';
 					echo '<p class="resright">'.tryField("street").'</p>';
-					echo '<p class="resright">'.tryField("town").', '.tryField("state").' '.tryField("zip").'</p>';
+					if(tryField("town")!="" && tryField("state")!=""){
+						echo '<p class="resright">'.tryField("town").', '.tryField("state").' '.tryField("zip").'</p>';
+					}
 					echo '</div>';
 					echo '<div class="resitem nohover">Donor added.</div>';
 					echo '</div>';
@@ -65,7 +68,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 						Back to Menu
 					</div>
 					<span class="logincenter">- or -</span>
-					<div class="loginbutton" style="width: 260px;" onclick="window.location.assign('./takedonation.php?donorid=<?php echo nextDonorID() ?>')">
+					<div class="loginbutton" style="width: 260px;" onclick="window.location.assign('./takedonation.php?donorid=<?=$newDonorID?>')">
 						Accept Donation from this Donor
 					</div>
 				</div>
@@ -92,9 +95,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 						$prevstate = tryField("state");
 						foreach($states as $state){
 							if($state == $prevstate){
-								echo "/t/t/t/t/t/t<option value=\"$state\" selected=\"selected\">$state</option>";
+								echo "<option value=\"$state\" selected=\"selected\">$state</option>";
 							}else{
-								echo "/t/t/t/t/t/t<option value=\"$state\">$state</option>";
+								echo "<option value=\"$state\">$state</option>";
 							}
 						}
 						?>
