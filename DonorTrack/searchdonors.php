@@ -29,11 +29,15 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		<link rel="stylesheet" type="text/css" href="cxa/css/cxa-ui.css">
 		<link rel="icon" type="image/png" href="cxa/img/favicon.ico" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.0/jquery.min.js"></script>
+		<script>window.jQuery || document.write('<script src="cxa/js/jquery.min.js"><\/script>')</script>
+		<script src="cxa/js/cxa-ui.js"></script>
 	</head>
 	<body>
 		<div id="main" style="min-height: 200px;">
 			<div id="topbar" class="loginbar noselect">
 				<?php cxa_header() ?>
+				<a id="refresher" class="hastip" tip="Refresh cached donor list" style="float: right; margin-right: 8px;" href="/donorinter.php?expire"></a>
 			</div>
 			<div class="welcomebar">
 				Donor Search <?php if(is_array($donorSearch)) echo "Results"; ?><br/>

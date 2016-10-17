@@ -53,5 +53,8 @@ if(empty($_SESSION["donorlist"]) || (!empty($_SESSION["donorlist_timestamp"]) &&
 	while($_SESSION["donorlist"]=="pending"){
 		sleep(0.1);
 	}
+}elseif(isset($_GET["expire"])){
+	refreshDonorList();
+	header("Location: ".parse_url($_SERVER['HTTP_REFERER'], PHP_URL_PATH));
 }
 ?>
