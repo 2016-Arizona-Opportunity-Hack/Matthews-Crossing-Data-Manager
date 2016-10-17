@@ -53,7 +53,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 						echo '<p class="resleft">Add New Donor</p>';
 						echo '</a>';
 					}else{
-						echo '<div class="resitem">No records found. NYI</div>';
+						echo '<div class="resitem">No records found.</div>';
 					}
 					echo '</div>';
 				}

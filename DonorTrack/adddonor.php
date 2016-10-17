@@ -6,15 +6,18 @@ include('donorinter.php');
 
 $donorAdded = false;
 
+function hasError(){
+	if($_SERVER['REQUEST_METHOD'] == 'POST'){
+		if(tryField("firstname")=="" && tryField("lastname")==""){
+			return " haserror";
+		}else{
+			return "";
+		}
+	}
+}
+
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
-	if(	   !empty($_POST["firstname"])
-		&& !empty($_POST["lastname"])
-		&& !empty($_POST["email"])
-		&& !empty($_POST["address"])
-		&& !empty($_POST["city"])
-		&& !empty($_POST["state"])
-		&& !empty($_POST["zipcode"])
-		&& !empty($_POST["phone"])){
+	if(!empty($_POST["firstname"]) || !empty($_POST["lastname"])){
 		//record the donor
 		$donorAdded = true;
 	}
@@ -30,6 +33,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 			.ilabel.ilabel {
 				margin: 0px;
 			}
+			.haserror {
+				outline: 1px solid red;
+			}
 		</style>
 	</head>
 	<body>
@@ -38,15 +44,18 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 				<?php cxa_header() ?>
 			</div>
 			<div class="welcomebar">
-				Add Donor <?php if($donorAdded) echo "Success"; ?><br/>
+				Add Donor <?php echo $donorAdded ? "Success" : "- One name required"; ?><br/>
 			</div>
 			<?php 
 				if($donorAdded){
 					echo '<div id="results" style="width: 100%; border-bottom: 1px solid #aaa; overflow-y: hidden; height: auto;">';
 					echo '<div class="resitem nohover"></div>';
 					echo '<div class="resitem nohover">';
-					echo '<p class="resleft">'.$_POST["firstname"].' '.$_POST["lastname"].'</p>';
-					echo '<p class="resright">'.$_POST["email"].'</p>';
+					echo '<p class="resleft">'.tryField("firstname").' '.tryField("lastname").'</p>';
+					echo '<p class="resleft">'.tryField("address").'</p>';
+					echo '<p class="resleft">'.tryField("city").', '.tryField("state").' '.tryField("zipcode").'</p>';
+					echo '<p class="resright">'.tryField("email").'</p>';
+					echo '<p class="resright">'.tryField("phone").'</p>';
 					echo '</div>';
 					echo '<div class="resitem nohover">Donor added. (not actually)</div>';
 					echo '</div>';
@@ -66,22 +75,33 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 				<form action="adddonor.php" method="post" id="login" style="height: auto; padding: 10px 15px; width: 270px; margin-bottom: 40px;">
 					<p class="ilabel">First Name</p>
 					<p class="ilabel fright">Last Name</p>
-					<input type="text" name="firstname" class="registertext" style="width: 49%; margin-right: 1%" /><!--
-				--><input type="text" name="lastname" class="registertext" style="width: 49%; margin-left: 1%" />
+					<input type="text" name="firstname" class="registertext<?=hasError()?>" style="width: 49%; margin-right: 1%" <?=tryFieldValue("firstname")?>/><!--
+				--><input type="text" name="lastname" class="registertext<?=hasError()?>" style="width: 49%; margin-left: 1%" <?=tryFieldValue("lastname")?>/>
 					<p class="ilabel">E-Mail Address</p>
-					<input type="text" name="email" class="registertext" style="width: 100%;" />
+					<input type="text" name="email" class="registertext" style="width: 100%;" <?=tryFieldValue("email")?>/>
 					<p class="ilabel">Street Address</p>
-					<input type="text" name="address" class="registertext" style="width: 100%;" />
+					<input type="text" name="address" class="registertext" style="width: 100%;" <?=tryFieldValue("address")?>/>
 					<p class="ilabel">City</p>
-					<input type="text" name="city" class="registertext" style="width: 100%;" />
+					<input type="text" name="city" class="registertext" style="width: 100%;" <?=tryFieldValue("city")?>/>
 					<p class="ilabel">State</p>
 					<p class="ilabel fright">ZIP Code</p>
 					<select name="state" class="registertext" style="width: 49%; margin-right: 1%;">
-						<option>AK</option><option>AZ</option>
+						<option value=""></option>
+						<?php
+						$states = Array('AL', 'AK', 'AS', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'DC', 'FM', 'FL', 'GA', 'GU', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MH', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'MP', 'OH', 'OK', 'OR', 'PW', 'PA', 'PR', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VI', 'VA', 'WA', 'WV', 'WI', 'WY', 'AE', 'AA', 'AP');
+						$prevstate = tryField("state");
+						foreach($states as $state){
+							if($state == $prevstate){
+								echo "/t/t/t/t/t/t<option value=\"$state\" selected=\"selected\">$state</option>";
+							}else{
+								echo "/t/t/t/t/t/t<option value=\"$state\">$state</option>";
+							}
+						}
+						?>
 					</select><!--
-				 --><input type="number" name="zipcode" class="registertext" style="width: 49%; margin-left: 1%" />
+				 --><input type="number" name="zipcode" class="registertext" style="width: 49%; margin-left: 1%" <?=tryFieldValue("zipcode")?>/>
 					<p class="ilabel">Phone Number</p>
-					<input type="number" name="phone" class="registertext" style="width: 100%;" />
+					<input type="number" name="phone" class="registertext" style="width: 100%;" <?=tryFieldValue("phone")?>/>
 					<input type="submit" style="position: absolute; height: 0px; width: 0px; border: none; padding: 0px;" hidefocus="true" tabindex="-1">
 				</form>
 				<div id="bottombar" class="loginbar noselect" onclick="document.getElementById('login').submit(); return false;">Submit&nbsp;&nbsp;</div>
