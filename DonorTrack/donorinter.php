@@ -8,7 +8,6 @@ function refreshDonorList(){
 	global $pypath, $fbm_user, $fbm_pass;
 	$pyInter = shell_exec("$pypath \"../FBM Utility/FoodBankManager.py\" \"donors\" \"$fbm_user\" \"$fbm_pass\"");
 	$interList = json_decode(preg_replace('/,\s*([\]}])/m', '$1', "{\"donors\":[".substr($pyInter,0,-7)."]}"), true)["donors"];
-	error_log(json_encode($interList));
 	foreach($interList as $interDonor){
 		$newDonorID = intval($interDonor["Donor ID"]);
 		$newDonorList[$newDonorID] = Array();
@@ -34,8 +33,12 @@ function addDonor($fields){
 	}
 	$json = json_encode($json_inter);
 	global $pypath, $fbm_user, $fbm_pass;
-	return shell_exec("$pypath \"../FBM Utility/FoodBankManager.py\" \"add_donor\" \"$fbm_user\" \"$fbm_pass\" \"$json\"");
-	
+	if(stristr(PHP_OS, 'WIN')){
+		shell_exec("$pypath \"../FBM Utility/FoodBankManager.py\" \"add_donor\" \"$fbm_user\" \"$fbm_pass\" \"".str_replace("\"", "\"\"", $json)."\"");
+	}else{
+		shell_exec("$pypath \"../FBM Utility/FoodBankManager.py\" \"add_donor\" \"$fbm_user\" \"$fbm_pass\" \"".escapeshellarg($json)."\"");
+	}
+	return true;
 }
 
 if(empty($_SESSION["donorlist"]) || (!empty($_SESSION["donorlist_timestamp"]) && $_SESSION["donorlist_timestamp"]+3600<time())){

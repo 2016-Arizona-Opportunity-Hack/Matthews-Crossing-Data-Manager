@@ -53,10 +53,9 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 					echo '<div class="resitem nohover"></div>';
 					echo '<div class="resitem nohover">';
 					echo '<p class="resleft">'.tryField("first").' '.tryField("last").'</p>';
-					echo '<p class="resleft">'.tryField("address").'</p>';
-					echo '<p class="resleft">'.tryField("city").', '.tryField("state").' '.tryField("zipcode").'</p>';
-					echo '<p class="resright">'.tryField("email").'</p>';
-					echo '<p class="resright">'.tryField("phone").'</p>';
+					echo '<p class="resleft">'.tryField("email").'</p>';
+					echo '<p class="resright">'.tryField("street").'</p>';
+					echo '<p class="resright">'.tryField("town").', '.tryField("state").' '.tryField("zip").'</p>';
 					echo '</div>';
 					echo '<div class="resitem nohover">Donor added.</div>';
 					echo '</div>';
@@ -81,7 +80,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 					<p class="ilabel">E-Mail Address</p>
 					<input type="text" name="email" class="registertext" style="width: 100%;" <?=tryFieldValue("email")?>/>
 					<p class="ilabel">Street Address</p>
-					<input type="text" name="address" class="registertext" style="width: 100%;" <?=tryFieldValue("address")?>/>
+					<input type="text" name="street" class="registertext" style="width: 100%;" <?=tryFieldValue("street")?>/>
 					<p class="ilabel">City</p>
 					<input type="text" name="town" class="registertext" style="width: 100%;" <?=tryFieldValue("town")?>/>
 					<p class="ilabel">State</p>
@@ -100,7 +99,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 						}
 						?>
 					</select><!--
-				 --><input type="number" name="zipcode" class="registertext" style="width: 49%; margin-left: 1%" <?=tryFieldValue("zipcode")?>/><!--
+				 --><input type="number" name="zip" class="registertext" style="width: 49%; margin-left: 1%" <?=tryFieldValue("zip")?>/><!--
 					<p class="ilabel">Phone Number</p>
 					<input type="number" name="phone" class="registertext" style="width: 100%;" <?=tryFieldValue("phone")?>/>-->
 					<input type="submit" style="position: absolute; height: 0px; width: 0px; border: none; padding: 0px;" hidefocus="true" tabindex="-1">
