@@ -33,6 +33,7 @@ function addDonor($fields){
 		}
 	}
 	$json = json_encode($json_inter);
+	global $pypath, $fbm_user, $fbm_pass;
 	return shell_exec("$pypath \"../FBM Utility/FoodBankManager.py\" \"add_donor\" \"$fbm_user\" \"$fbm_pass\" \"$json\"");
 	
 }

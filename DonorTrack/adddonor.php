@@ -18,8 +18,9 @@ function hasError(){
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
 	if(!empty($_POST["first"]) || !empty($_POST["last"])){
-		//record the donor
-		$donorAdded = true;
+		if(addDonor($_POST)){
+			$donorAdded = true;
+		}
 	}
 }
 ?>
@@ -57,7 +58,7 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 					echo '<p class="resright">'.tryField("email").'</p>';
 					echo '<p class="resright">'.tryField("phone").'</p>';
 					echo '</div>';
-					echo '<div class="resitem nohover">Donor added. (not actually)</div>';
+					echo '<div class="resitem nohover">Donor added.</div>';
 					echo '</div>';
 			?>
 				<div id="login" style="height: auto; padding: 10px 15px; width: 270px; margin-bottom: 15px; margin-top: 5px;">
