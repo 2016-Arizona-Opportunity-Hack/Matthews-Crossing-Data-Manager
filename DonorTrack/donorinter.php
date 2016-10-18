@@ -24,36 +24,53 @@ function nextDonorID(){
 }
 
 function addDonor($fields){
-	$params = Array("first", "last", "email", "street", "town", "state", "zip");
-	$json_inter = Array();
-	foreach($params as $param){
-		if(!empty($fields[$param])){
-			$json_inter[$param]=escapeshellcmd($fields[$param]);
-		}else{
-			$json_inter[$param]="";
+	if(!empty($fields["first"]) || !empty($fields["last"])){
+		$params = Array("first", "last", "email", "street", "town", "state", "zip");
+		$json_inter = Array();
+		foreach($params as $param){
+			if(!empty($fields[$param])){
+				$json_inter[$param]=escapeshellcmd($fields[$param]);
+			}else{
+				$json_inter[$param]="";
+			}
 		}
-	}
-	$json = json_encode($json_inter);
-	global $pypath, $fbm_user, $fbm_pass;
-	if(stristr(PHP_OS, 'WIN')){
-		shell_exec("$pypath \"../FBM Utility/FoodBankManager.py\" \"add_donor\" \"$fbm_user\" \"$fbm_pass\" \"".str_replace("\"", "\"\"", $json)."\"");
+		$json = json_encode($json_inter);
+		global $pypath, $fbm_user, $fbm_pass;
+		if(stristr(PHP_OS, 'WIN')){
+			$result = shell_exec("$pypath \"../FBM Utility/FoodBankManager.py\" \"add_donor\" \"$fbm_user\" \"$fbm_pass\" \"".str_replace("\"", "\"\"", $json)."\"");
+		}else{
+			$result = shell_exec("$pypath \"../FBM Utility/FoodBankManager.py\" \"add_donor\" \"$fbm_user\" \"$fbm_pass\" \"".escapeshellcmd($json)."\"");
+		}
+		$newDonorID=nextDonorID();
+		$_SESSION["donorlist"][$newDonorID]["firstname"] = $json_inter["first"];
+		$_SESSION["donorlist"][$newDonorID]["lastname"] = $json_inter["last"];
+		$_SESSION["donorlist"][$newDonorID]["email"] = $json_inter["email"];
+		if($result != "200"){
+			return true;
+		}else{
+			error_log($result);
+			return false;
+		}
 	}else{
-		shell_exec("$pypath \"../FBM Utility/FoodBankManager.py\" \"add_donor\" \"$fbm_user\" \"$fbm_pass\" \"".escapeshellcmd($json)."\"");
+		error_log("malformed request");
+		return false;
 	}
-	$newDonorID=nextDonorID();
-	$_SESSION["donorlist"][$newDonorID]["firstname"] = $json_inter["first"];
-	$_SESSION["donorlist"][$newDonorID]["lastname"] = $json_inter["last"];
-	$_SESSION["donorlist"][$newDonorID]["email"] = $json_inter["email"];
-	return true;
 }
 
 function addDonation($fields){
-	if(!empty($fields["donorid"]) && array_key_exists($fields["donorid"], $_SESSION["donorlist"]) && !empty($fields["weight"]) && !empty($fields["type"])){
+	if(!empty($fields["donorid"]) && array_key_exists($fields["donorid"], $_SESSION["donorlist"]) && !empty($fields["weight"]) && isset($fields["type"])){
 		//if(!isset($fields["source"])) $fields["source"]="";
 		global $pypath, $fbm_user, $fbm_pass;
-		shell_exec("$pypath \"../FBM Utility/FoodBankManager.py\" \"add_donation\" \"$fbm_user\" \"$fbm_pass\" ".escapeshellarg($fields["donorid"])." ".escapeshellarg($fields["weight"])." ".escapeshellarg($fields["type"]));
+		$result = shell_exec("$pypath \"../FBM Utility/FoodBankManager.py\" \"add_donation\" \"$fbm_user\" \"$fbm_pass\" ".escapeshellarg($fields["donorid"])." ".escapeshellarg($fields["weight"])." ".escapeshellarg($fields["type"]));
+		if($result != "200"){
+			return true;
+		}else{
+			error_log($result);
+			return false;
+		}
 	}else{
 		error_log("malformed request");
+		return false;
 	}
 }
 

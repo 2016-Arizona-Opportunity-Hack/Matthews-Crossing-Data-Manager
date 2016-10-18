@@ -21,6 +21,8 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		$newDonorID = nextDonorID();
 		if(addDonor($_POST)){
 			$donorAdded = true;
+		}else{
+			$interError = true;
 		}
 	}
 }
@@ -69,6 +71,24 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 						Accept Donation from this Donor
 					</div>
 				</div>
+			<?php
+				}elseif(isset($interError)){
+			?>
+				<div id="results" style="width: 100%; border-bottom: 1px solid #aaa; overflow-y: hidden; height: auto;">
+					<div class="resitem nohover"></div>
+					<div class="resitem nohover">
+						Internal error!
+					</div>
+				</div>
+				<div id="login" style="height: auto; padding: 10px 15px; width: 270px; margin-bottom: 15px; margin-top: 5px;">
+					<div class="loginbutton" style="width: 260px;" onclick="window.location.assign('/index.php')">
+						Back to Menu
+					</div>
+					<span class="logincenter">- or -</span>
+					<div class="loginbutton" style="width: 260px;" onclick="window.location.assign('/adddonor.php')">
+						Try Again
+					</div>
+				</div>			
 			<?php
 				}else{
 			?>
