@@ -89,6 +89,22 @@ function boot_user($level){
 		error_log('Failed access attempt at level '.$level.' by '.$_SESSION["userdata"]["username"].' with authorization level '.$_SESSION["userdata"]["authorization"].'!');
 	}
 }
+function tryField($field){
+	if(!empty($_GET[$field])){
+		return $_GET[$field];
+	}elseif(!empty($_POST[$field])){
+		return $_POST[$field];
+	}else{
+		return "";
+	}
+}
+function tryFieldValue($field){
+	$value=tryField($field);
+	if($value != ""){
+		return "value=\"$value\" ";
+	}
+	return "";
+}
 if (empty($_SESSION['userid']) && !empty($_COOKIE['remember'])) {
     list($selector, $authenticator) = explode(':', $_COOKIE['remember']);
     $result = $conn->query("SELECT * FROM auth_tokens WHERE selector = \"$selector\"");

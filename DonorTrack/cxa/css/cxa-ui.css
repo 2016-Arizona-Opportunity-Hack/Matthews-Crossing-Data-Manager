@@ -492,3 +492,6 @@ body {
 .resitem.nohover:nth-child(even) {
 	background: #ddf;
 }
+.haserror {
+	outline: 1px solid red;
+}
