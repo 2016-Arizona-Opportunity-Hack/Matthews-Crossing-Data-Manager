@@ -39,7 +39,7 @@ function addDonor($fields){
 		if(stristr(PHP_OS, 'WIN')){
 			$result = shell_exec("$pypath \"../FBM Utility/FoodBankManager.py\" \"add_donor\" \"$fbm_user\" \"$fbm_pass\" \"".str_replace("\"", "\"\"", $json)."\"");
 		}else{
-			$result = shell_exec("$pypath \"../FBM Utility/FoodBankManager.py\" \"add_donor\" \"$fbm_user\" \"$fbm_pass\" \"".escapeshellcmd($json)."\"");
+			$result = shell_exec("$pypath \"../FBM Utility/FoodBankManager.py\" \"add_donor\" \"$fbm_user\" \"$fbm_pass\" '$json'");
 		}
 		$newDonorID=nextDonorID();
 		$_SESSION["donorlist"][$newDonorID]["firstname"] = $json_inter["first"];
