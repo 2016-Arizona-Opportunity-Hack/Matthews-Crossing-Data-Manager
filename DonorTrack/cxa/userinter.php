@@ -18,28 +18,32 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 		switch($_POST["action"]){
 			case "approveuser":
 				if(authorized(3)){
-					$luid=$conn->escape_string($_POST["data"]['userid']);
 					$authlevel=$conn->escape_string($_POST["data"]['authlevel']);
-					$qry="SELECT * FROM user_limbo WHERE userid=\"$luid\" LIMIT 1";
-					$result=$conn->query($qry);
-					if($result && $result->num_rows==1){
-						$newuser=$result->fetch_assoc();
-						$qry='INSERT INTO users (username,password,name,email,authorization,otpsecret) VALUES ("'.$newuser["username"].'", "'.$newuser["password"].'", "'.$newuser["name"].'", "'.$newuser["email"].'", "'.$authlevel.'", "'.$newuser["otpsecret"].'")';
-						if($conn->query($qry)){
-							$qry='DELETE FROM user_limbo WHERE userid="'.$newuser["userid"].'" LIMIT 1';
+					if($authlevel <= $_SESSION["userdata"]["authorization"]){
+						$luid=$conn->escape_string($_POST["data"]['userid']);
+						$qry="SELECT * FROM user_limbo WHERE userid=\"$luid\" LIMIT 1";
+						$result=$conn->query($qry);
+						if($result && $result->num_rows==1){
+							$newuser=$result->fetch_assoc();
+							$qry='INSERT INTO users (username,password,name,email,authorization,otpsecret) VALUES ("'.$conn->escape_string($newuser["username"]).'", "'.$conn->escape_string($newuser["password"]).'", "'.$conn->escape_string($newuser["name"]).'", "'.$conn->escape_string($newuser["email"]).'", "'.$authlevel.'", "'.$conn->escape_string($newuser["otpsecret"]).'")';
 							if($conn->query($qry)){
-								echo "ok";
+								$qry='DELETE FROM user_limbo WHERE userid="'.$newuser["userid"].'" LIMIT 1';
+								if($conn->query($qry)){
+									echo "ok";
+								}else{
+									echo "dbe";
+								error_log($conn->error);
+								}
 							}else{
 								echo "dbe";
-							error_log($conn->error);
+								error_log($conn->error);
 							}
 						}else{
 							echo "dbe";
 							error_log($conn->error);
 						}
 					}else{
-						echo "dbe";
-						error_log($conn->error);
+						echo "unauthorized";
 					}
 				}else{
 					echo "unauthorized";

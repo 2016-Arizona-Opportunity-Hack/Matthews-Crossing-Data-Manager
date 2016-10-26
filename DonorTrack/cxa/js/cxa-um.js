@@ -86,7 +86,15 @@ var tApproveUsers={
 
 var interAddress="userinter.php";
 var serverFail = false;
-var serverError = function(dataa){alert("Could not contact server");console.log(dataa);serverFail=true;};
+var serverError = function(dataa){
+	if(dataa){
+		alert("Server error: "+dataa);
+	}else{
+		alert("Could not contact server");
+	}
+	console.log(dataa);
+	serverFail=true;
+};
 var refresh = function(){console.log("No mode!");};
 var cElements=[];
 
