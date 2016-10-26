@@ -65,6 +65,18 @@ if(isset($_SESSION["userdata"])){
 						New User
 					</a>
 				</div>
+				';}elseif(authorized(3)){echo '
+				<div class="action drawer-handle" id="dh-admin">
+					Administration
+				</div>
+				<div class="drawer" id="d-admin">
+					<a class="action stored" href="./cxa/approveusers.php">
+						Approve User Requests
+					</a>
+					<a class="action stored" href="./cxa/register.php">
+						New User
+					</a>
+				</div>
 				';}
 				?>
 				<div class="action drawer-handle" id="dh-account">

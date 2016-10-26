@@ -10,7 +10,7 @@ If not, to view a copy of the license, visit https://creativecommons.org/license
 <?php
 include('php/session.php');
 include('meta.php');
-boot_user(4);
+boot_user(3);
 ?>
 <html>
 	<head>
