@@ -45,29 +45,5 @@ if(!isset($loginerror)){
 			<div id="bottombar" class="loginbar noselect" onclick="document.getElementById('main').submit(); return false;">Login&nbsp;&nbsp;</div>
 			<div id="footer" class="loginbar" ><?php cxa_footer() ?></div>
 		</form>
-		<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" style="position: absolute; bottom: 10px; right: 10px; margin-bottom: 4px;">
-		
-			<!-- Identify your business so that you can collect the payments. -->
-			<input type="hidden" name="business"
-				value="test@test.tester">
-		
-			<!-- Specify a Donate button. -->
-			<input type="hidden" name="cmd" value="_donations">
-		
-			<!-- Specify details about the contribution -->
-			<input type="hidden" name="item_name" value="Friends of the Park">
-			<input type="hidden" name="item_number" value="Fall Cleanup Campaign">
-			<input type="hidden" name="currency_code" value="USD">
-			<input type="hidden" name="notify_url" value="https://matt.mcepic.com/index.php">
-			
-		
-			<!-- Display the payment button. -->
-			<input type="image" name="submit"
-			src="https://www.paypalobjects.com/webstatic/en_US/i/btn/png/btn_donate_92x26.png"
-			alt="Donate" >
-			<img alt="" width="1" height="1"
-			src="https://www.paypalobjects.com/en_US/i/scr/pixel.gif" >
-		
-		</form>
 	</body>
 </html>

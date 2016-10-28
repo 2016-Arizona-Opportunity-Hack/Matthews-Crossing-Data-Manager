@@ -9,8 +9,26 @@ If not, to view a copy of the license, visit https://creativecommons.org/license
 */
 include("php/session.php");
 
-function generateResetLink($authenticator){
-	return (!empty($_SERVER['HTTPS']) ? 'https' : 'http')."://".$_SERVER["HTTP_HOST"].dirname($_SERVER["PHP_SELF"])."/reset.php?token=".strtr(base64_encode($authenticator), '+/=', '-_,');
+function generateResetLink($authenticator, $userid){
+	$resetLink=(!empty($_SERVER['HTTPS']) ? 'https' : 'http')."://".$_SERVER["HTTP_HOST"].dirname($_SERVER["PHP_SELF"])."/reset.php?token=".strtr(base64_encode($authenticator), '+/=', '-_,');
+	global $conn, $send_email, $thedomain, $app_name;
+	if($send_email){
+		$result = $conn->query("SELECT * FROM users WHERE userid=$userid");
+		if($result && $result->num_rows==1){
+			$row=$result->fetch_assoc();
+			if(preg_match("/.+@.+/", $row["email"])){
+				mail($row["email"], "$app_name Password Reset",'
+					<h2>'.$app_name.' - Password Reset Link</h2>
+					<p>Hi '.explode(' ',trim($_SESSION['userdata']['name']))[0].',<br/>
+					You can reset your password at the following link:<br/>
+					<a href="'.$resetLink.'.">'.$resetLink.'</a><br/>
+					If you have forgotten your username or encounter any problems when resetting your password, please contact your administrator.</p>
+					<p>Please do not reply to this email. Your response will not be received.</p>
+				','From: accounts@'.$thedomain.'\r\nReply-To: noreply@'.$thedomain);
+			}
+		}
+	}
+	return $resetLink;
 }
 
 if($_SERVER['REQUEST_METHOD'] == 'POST'){
@@ -112,14 +130,14 @@ if($_SERVER['REQUEST_METHOD'] == 'POST'){
 					$result=$conn->query("SELECT * FROM password_reset WHERE userid=$userid");
 					if($result && $result->num_rows==0){
 						if($conn->query("INSERT INTO password_reset (userid, token, expires) VALUES ($userid, \"$token\", $expires)")){
-							echo generateResetLink($authenticator);
+							echo generateResetLink($authenticator, $userid);
 						}else{
 							echo "dbe";
 							error_log($conn->error);
 						}
 					}elseif($result){
 						if($conn->query("UPDATE password_reset SET token=\"$token\", expires=$expires WHERE userid=$userid LIMIT 1")){
-							echo generateResetLink($authenticator);
+							echo generateResetLink($authenticator, $userid);
 						}else{
 							echo "dbe";
 							error_log($conn->error);
