@@ -26,7 +26,10 @@ function generateResetLink($authenticator, $userid){
 					If you have forgotten your username or encounter any problems when resetting your password, please contact your administrator.</p>
 					<p>Please do not reply to this email. Your response will not be received.</p>
 				</body></html>
-				','From: accounts@'.$thedomain.'\r\nReply-To: noreply@'.$thedomain.'\r\nMIME-Version: 1.0\r\nContent-Type: text/html; charset=ISO-8859-1\r\n');
+				',"From: accounts@".$thedomain."\r\n".
+				"Reply-To: noreply@".$thedomain."\r\n".
+				"MIME-Version: 1.0\r\n".
+				"Content-Type: text/html; charset=ISO-8859-1\r\n");
 			}
 		}
 	}
