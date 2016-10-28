@@ -22,11 +22,11 @@ function generateResetLink($authenticator, $userid){
 					<h2>'.$app_name.' - Password Reset Link</h2>
 					<p>Hi '.explode(' ',trim(strip_tags($_SESSION['userdata']['name'])))[0].',<br/>
 					You can reset your password at the following link:<br/>
-					<a href="'.$resetLink.'.">'.$resetLink.'</a><br/>
+					<a href="'.$resetLink.'">'.$resetLink.'</a><br/>
 					If you have forgotten your username or encounter any problems when resetting your password, please contact your administrator.</p>
 					<p>Please do not reply to this email. Your response will not be received.</p>
 				</body></html>
-				','From: accounts@'.$thedomain.'\r\nReply-To: noreply@'.$thedomain.'\r\nContent-Type: text/html; charset=ISO-8859-1\r\n');
+				','From: accounts@'.$thedomain.'\r\nReply-To: noreply@'.$thedomain.'\r\nMIME-Version: 1.0\r\nContent-Type: text/html; charset=ISO-8859-1\r\n');
 			}
 		}
 	}
