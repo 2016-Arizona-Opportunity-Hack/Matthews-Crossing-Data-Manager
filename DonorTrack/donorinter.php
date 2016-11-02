@@ -61,7 +61,16 @@ function addDonation($fields){
 	if(!empty($fields["donorid"]) && array_key_exists($fields["donorid"], $_SESSION["donorlist"]) && !empty($fields["weight"]) && isset($fields["type"])){
 		//if(!isset($fields["source"])) $fields["source"]="";
 		global $pypath, $fbm_user, $fbm_pass;
-		$result = shell_exec("$pypath \"../FBM Utility/FoodBankManager.py\" \"add_donation\" \"$fbm_user\" \"$fbm_pass\" ".escapeshellarg($fields["donorid"])." ".escapeshellarg($fields["weight"])." ".escapeshellarg($fields["type"]));
+		if(!empty($fields["date"])){
+			try{
+				$date = new DateTime($fields["date"]);
+			}catch(Exception $ex){
+				$date = new DateTime();
+			}
+		}else{
+			$date = new DateTime();
+		}
+		$result = shell_exec("$pypath \"../FBM Utility/FoodBankManager.py\" \"add_donation\" \"$fbm_user\" \"$fbm_pass\" ".escapeshellarg($fields["donorid"])." ".escapeshellarg($fields["weight"])." ".escapeshellarg($fields["type"])." \"".$date->format("Y-m-d")."\"");
 		if($result != "200"){
 			return true;
 		}else{
