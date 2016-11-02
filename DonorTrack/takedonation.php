@@ -37,6 +37,8 @@ if(!empty($_POST["donorid"]) && !empty($_POST["weight"])){
 		<link rel="stylesheet" type="text/css" href="cxa/css/cxa-ui.css">
 		<link rel="icon" type="image/png" href="cxa/img/favicon.ico" />
 		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" href="https://unpkg.com/flatpickr/dist/flatpickr.min.css">
+		<script src="https://unpkg.com/flatpickr"></script>
 	</head>
 	<body>
 		<div id="main" style="min-height: 200px;">
@@ -119,7 +121,7 @@ if(!empty($_POST["donorid"]) && !empty($_POST["weight"])){
 					<p class="ilabel">Donation Weight</p>
 					<input type="number" name="weight" class="registertext<?=hasError()?>" style="width: 100%;" <?=tryFieldValue("weight")?>/>
 					<p class="ilabel">Donation Date <span style="color: #666">(YYYY-MM-DD)</span></p>
-					<input type="text" name="date" class="registertext" style="width: 100%;" <?=tryField("date")?tryFieldValue("date"):'value="'.date("Y-m-d").'"'?>/>
+					<input type="text" id="date" name="date" class="registertext" style="width: 100%;" <?=tryField("date")?tryFieldValue("date"):'value="'.date("Y-m-d").'"'?>/>
 					<input type="submit" style="position: absolute; height: 0px; width: 0px; border: none; padding: 0px;" hidefocus="true" tabindex="-1">
 				</form>
 				<div id="bottombar" class="loginbar noselect" onclick="document.getElementById('login').submit(); return false;">Submit&nbsp;&nbsp;</div>
@@ -128,6 +130,9 @@ if(!empty($_POST["donorid"]) && !empty($_POST["weight"])){
 			?>
 			<div id="footer" class="loginbar"><?php cxa_footer() ?></div>
 		</div>
+		<script>
+			flatpickr("#date");
+		</script>
 	</body>
 </html>
 <?php
