@@ -94,7 +94,7 @@ class FBM():
 			self.donation_table = csv.reader(str(r.raw.data).split('\n'))
 		return self.donation_table
 
-	def PostDonation(self, D_id, dollars, pounds, D_type):
+	def PostDonation(self, D_id, dollars, pounds, D_type, date):
 		donation_type = [
 			"",
 			"Individual Donor",
@@ -111,7 +111,7 @@ class FBM():
 		payload = {
 		'action': 'Save Donation & close',
 		'donationType_id': '1',
-		'donation_at': time.strftime('%Y-%m-%d'),
+		'donation_at': date,
 		'donations_1b458b4e6a': donation_type[int(D_type)],
 		'donations_e0a1fae0a3': dollars,
 		'donations_f695e975c6': pounds
@@ -162,6 +162,6 @@ if __name__ == '__main__':
 		# first, last, email, street, tow, state, zip
 		print q.AddDonor(sys.argv[4])
 	elif sys.argv[1] == "add_donation":
-		# type user pass donor_id pounds donation_type
-		print q.PostDonation(sys.argv[4], 0, sys.argv[5], sys.argv[6])
+		# type user pass donor_id pounds donation_type date (YYYY-MM-DD)
+		print q.PostDonation(sys.argv[4], 0, sys.argv[5], sys.argv[6], sys.argv[7])
 	

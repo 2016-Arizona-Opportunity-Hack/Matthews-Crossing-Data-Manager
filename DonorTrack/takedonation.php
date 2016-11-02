@@ -54,6 +54,7 @@ if(!empty($_POST["donorid"]) && !empty($_POST["weight"])){
 					echo '<p class="resleft">'.$_SESSION["donorlist"][tryField("donorid")]["firstname"].' '.$_SESSION["donorlist"][tryField("donorid")]["lastname"].'</p>';
 					echo '<p class="resright">'.$_SESSION["donorlist"][tryField("donorid")]["email"].'</p>';
 					echo '<p class="resleft">'.$donation_types[intval($_POST["type"])].'</p>';
+					echo '<p class="resleft">'.$_POST["date"].'</p>';
 					//echo '<p class="resleft">'.$_POST["source"].'</p>';
 					echo '<p class="resright">'.$_POST["weight"].' lbs</p>';
 					echo '</div>';
@@ -117,6 +118,8 @@ if(!empty($_POST["donorid"]) && !empty($_POST["weight"])){
 					<input type="text" name="source" class="registertext" style="width: 100%;" <?=tryFieldValue("source")?>/>-->
 					<p class="ilabel">Donation Weight</p>
 					<input type="number" name="weight" class="registertext<?=hasError()?>" style="width: 100%;" <?=tryFieldValue("weight")?>/>
+					<p class="ilabel">Donation Date <span style="color: #666">(YYYY-MM-DD)</span></p>
+					<input type="text" name="date" class="registertext" style="width: 100%;" <?=tryField("date")?tryFieldValue("date"):'value="'.date("Y-m-d").'"'?>/>
 					<input type="submit" style="position: absolute; height: 0px; width: 0px; border: none; padding: 0px;" hidefocus="true" tabindex="-1">
 				</form>
 				<div id="bottombar" class="loginbar noselect" onclick="document.getElementById('login').submit(); return false;">Submit&nbsp;&nbsp;</div>
