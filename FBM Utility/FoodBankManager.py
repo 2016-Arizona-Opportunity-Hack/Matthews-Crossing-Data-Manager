@@ -23,6 +23,8 @@ class FBM(object):
 		self.db = MySQLdb.connect(**database_info)
 		self.cur = self.db.cursor()
 
+		self.auth()
+
 	@property
 	def grocery_list(self):
 		if self._grocery_list is None:
@@ -32,10 +34,13 @@ class FBM(object):
 		return self._grocery_list
 
 
-	def auth(self, user, password):
+	def auth(self):
+		with open('MCFB_Auth.json') as f:
+			auth_info = json.load(f)
+
 		payload = {
-			'username': user,
-			'password': password,
+			'username': auth_info["user"],
+			'password': auth_info["password"],
 			'location': '1',
 			'action': 'Login'
 		}
@@ -139,7 +144,7 @@ class FBM(object):
 					don_type = "Individual"
 			# Senior Boxes (this must cone before Church)
 			if don_type is None:
-				if "Senior Boxes" in data_dict["Name of Food Item"]:
+				if "Senior Boxes" in data_dict["Name of Food Item"] or "Senior Boxes" in data_dict["Memo"]:
 					don_type = "Senior program"
 			# Grocery
 			if don_type is None:
@@ -275,11 +280,10 @@ if __name__ == '__main__':
 	# set unlimited table display size
 	pd.set_option('display.expand_frame_repr', False)
 
-	if len(sys.argv) < 4:
-		print "Usage: 'task' 'user' 'pass' etc..."
+	if len(sys.argv) < 3:
+		print "Usage: 'task' <params>etc..."
 		exit(1)
 	q = FBM("mcfb.soxbox.co")
-	q.auth(sys.argv[2], sys.argv[3])
 	if sys.argv[1] == "donors":
 		donor_list = q.GetDonors()
 		headers = next(donor_list)
@@ -294,11 +298,11 @@ if __name__ == '__main__':
 		print q.AddDonor(sys.argv[4])
 	elif sys.argv[1] == "add_donation":
 		# type user pass donor_id pounds donation_type date (YYYY-MM-DD)
-		print q.PostDonation(sys.argv[4], 0, sys.argv[5], sys.argv[6], sys.argv[7])
+		print q.PostDonation(sys.argv[2], 0, sys.argv[3], sys.argv[4], sys.argv[5])
 	elif sys.argv[1] == "fooddonations":
 		# start-date, end-date (format mm-dd-yyyy
-		start = datetime.strptime(sys.argv[4], "%m-%d-%Y")
-		end = datetime.strptime(sys.argv[5], "%m-%d-%Y")
+		start = datetime.strptime(sys.argv[2], "%m-%d-%Y")
+		end = datetime.strptime(sys.argv[3], "%m-%d-%Y")
 		donor_list = q.GetFoodDonations(start, end)
 		donor_list.to_csv("out.csv", sep=',')
 		print donor_list
