@@ -116,71 +116,6 @@ class FBM(object):
 			self.donation_table = csv.reader(str(r.raw.data).split('\n'))
 		return self.donation_table
 
-	def AddDonationToTable(self, df):
-		for i, row in df.iterrows():
-			query = """INSERT INTO `food_donor_data` (
-			`Donation ID`, 
-			`Zip/Postal Code`, 
-			`Weight (lbs)`, 
-			`Company / Organization Name`, 
-			`Memo`, 
-			`State/Province`, 
-			`Donation Type`, 
-			`Quantity Type`, 
-			`Source of Donation`, 
-			`Donor Type`, 
-			`Street Address`, 
-			`City/Town`, 
-			`Value (approximate $)`, 
-			`First Name`, 
-			`Apartment`, 
-			`Spouse Name (First, Last)`, 
-			`Salutation Greeting (Dear So and So)`, 
-			`Donated On`, 
-			`Last Name`, 
-			`Donor ID`, 
-			`Quantity`, 
-			`Middle Name`, 
-			`Email Address`, 
-			`Name of Food Item`, 
-			`Food Item Category`, 
-			`DonorCategory`
-			) VALUES 
-			(
-			%s,
-			%s,
-			%s,
-			%s,
-			%s,
-			%s,
-			%s,
-			%s,
-			%s,
-			%s,
-			%s,
-			%s,
-			%s,
-			%s,
-			%s,
-			%s,
-			%s,
-			%s,
-			%s,
-			%s,
-			%s,
-			%s,
-			%s,
-			%s,
-			%s,
-			%s) ON DUPLICATE KEY UPDATE;"""
-
-			try:
-				self.cur.execute(query, tuple(row[i] for i in ["Donation ID","Zip/Postal Code","Weight (lbs)","Company / Organization Name","Memo","State/Province","Donation Type","Quantity Type","Source of Donation","Donor Type","Street Address","City/Town","Value (approximate $)","First Name","Apartment","Spouse Name (First, Last)","Salutation Greeting (Dear So and So)","Donated On","Last Name","Donor ID","Quantity","Middle Name","Email Address","Name of Food Item","Food Item Category","DonorCategory"]))
-			except:
-				print self.cur._last_executed
-				raise
-			self.db.commit()
-
 	def FindDonationType(self, df):
 		df["DonorCategory"] = ""
 		for i, row in df.iterrows():
@@ -337,6 +272,7 @@ class FBM(object):
 		
 
 if __name__ == '__main__':
+	# set unlimited table display size
 	pd.set_option('display.expand_frame_repr', False)
 
 	if len(sys.argv) < 4:
